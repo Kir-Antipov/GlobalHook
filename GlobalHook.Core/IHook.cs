@@ -16,7 +16,7 @@ namespace GlobalHook.Core
 
         void Uninstall();
 
-        event HookEventHandler<IHookEventArgs>? OnEvent;
+        event EventHandler<IHookEventArgs>? OnEvent;
 
         public static IHook Combine(params IHook[] loggers) => new CombinedHook(loggers);
 

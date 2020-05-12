@@ -1,20 +1,25 @@
-﻿namespace GlobalHook.Core.Keyboard
+﻿using GlobalHook.Core.Extensions;
+using System;
+
+namespace GlobalHook.Core.Keyboard
 {
     public interface IKeyboardHook : IHook
     {
-        event HookEventHandler<IHookEventArgs>? IHook.OnEvent { add => OnEvent += value; remove => OnEvent -= value; }
-
-        new event HookEventHandler<IKeyboardEventArgs>? OnEvent;
+        new event EventHandler<IKeyboardEventArgs>? OnEvent
+        {
+            add => ((IHook)this).OnEvent += value!.Cast<EventHandler<IHookEventArgs>>();
+            remove => ((IHook)this).OnEvent -= value!.Cast<EventHandler<IHookEventArgs>>();
+        }
 
         /// <summary>
         /// Occurs when a key is pressed. 
         /// </summary>
-        event HookEventHandler<IKeyboardEventArgs>? KeyDown;
+        event EventHandler<IKeyboardEventArgs>? KeyDown;
 
         /// <summary>
         /// Occurs when a key is released. 
         /// </summary>
-        event HookEventHandler<IKeyboardEventArgs>? KeyUp;
+        event EventHandler<IKeyboardEventArgs>? KeyUp;
 
         /// <summary>
         /// Occurs when a key is pressed.
@@ -30,6 +35,6 @@
         /// the <see cref="KeyDown"/> and <see cref="KeyUp"/> events. 
         /// Use the <see cref="IKeyboardEventArgs.KeyChar"/> property to sample keystrokes at run time and to consume a subset of common keystrokes. 
         /// </remarks>
-        event HookEventHandler<IKeyboardEventArgs>? KeyPress;
+        event EventHandler<IKeyboardEventArgs>? KeyPress;
     }
 }

@@ -1,20 +1,25 @@
-﻿namespace GlobalHook.Core.Mouse
+﻿using GlobalHook.Core.Extensions;
+using System;
+
+namespace GlobalHook.Core.Mouse
 {
     public interface IMouseHook : IHook
     {
-        event HookEventHandler<IHookEventArgs>? IHook.OnEvent { add => OnEvent += value; remove => OnEvent -= value; }
-
-        new event HookEventHandler<IMouseEventArgs>? OnEvent;
+        new event EventHandler<IMouseEventArgs>? OnEvent
+        {
+            add => ((IHook)this).OnEvent += value!.Cast<EventHandler<IHookEventArgs>>();
+            remove => ((IHook)this).OnEvent -= value!.Cast<EventHandler<IHookEventArgs>>();
+        }
 
         /// <summary>
         /// Occurs when the mouse a mouse button is pressed. 
         /// </summary>
-        event HookEventHandler<IMouseEventArgs>? MouseDown;
+        event EventHandler<IMouseEventArgs>? MouseDown;
 
         /// <summary>
         /// Occurs when a mouse button is released. 
         /// </summary>
-        event HookEventHandler<IMouseEventArgs>? MouseUp;
+        event EventHandler<IMouseEventArgs>? MouseUp;
 
         /// <summary>
         /// Occurs when a click was performed by the mouse. 
@@ -27,7 +32,7 @@
         /// <item><see cref="MouseUp"/></item>
         /// </list>
         /// </remarks>
-        event HookEventHandler<IMouseEventArgs>? MouseClick;
+        event EventHandler<IMouseEventArgs>? MouseClick;
 
         /// <summary>
         /// Occurs when a left click was second in a row. 
@@ -41,21 +46,21 @@
         /// <item><see cref="MouseUp"/></item>
         /// </list>
         /// </remarks>
-        event HookEventHandler<IMouseEventArgs>? MouseDoubleClick;
+        event EventHandler<IMouseEventArgs>? MouseDoubleClick;
 
         /// <summary>
         /// Occurs when the mouse wheel moves. 
         /// </summary>
-        event HookEventHandler<IMouseEventArgs>? MouseWheel;
+        event EventHandler<IMouseEventArgs>? MouseWheel;
 
         /// <summary>
         /// Occurs when the mouse's horizontal scroll wheel is tilted or rotated
         /// </summary>
-        event HookEventHandler<IMouseEventArgs>? MouseHorizontalWheel;
+        event EventHandler<IMouseEventArgs>? MouseHorizontalWheel;
 
         /// <summary>
         /// Occurs when the mouse pointer is moved. 
         /// </summary>
-        event HookEventHandler<IMouseEventArgs>? MouseMove;
+        event EventHandler<IMouseEventArgs>? MouseMove;
     }
 }
