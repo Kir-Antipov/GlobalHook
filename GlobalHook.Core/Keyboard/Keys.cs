@@ -86,15 +86,18 @@ namespace GlobalHook.Core.Keyboard
         ShiftKey = 16,
 
         /// <summary>
-        /// The CTRL key.        /// </summary>
+        /// The CTRL key.
+        /// </summary>
         ControlKey = 17,
 
         /// <summary>
-        /// The ALT key.        /// </summary>
+        /// The ALT key.
+        /// </summary>
         Menu = 18,
 
         /// <summary>
-        /// The ALT key.        /// </summary>
+        /// The ALT key.
+        /// </summary>
         AltKey = 18,
 
         /// <summary>
@@ -983,5 +986,10 @@ namespace GlobalHook.Core.Keyboard
         /// The ALT modifier key.
         /// </summary>
         Alt = 262144
+    }
+
+    public static class KeysExtensions
+    {
+        public static bool Equals(this Keys key, params Keys[] keys) => Array.TrueForAll(keys, x => key.HasFlag(x));
     }
 }
