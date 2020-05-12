@@ -20,6 +20,8 @@ namespace GlobalHook.Core.Windows.Interop.Libs
 
         public static DateTime TicksToDateTime(double ticks) => PCStarted.AddMilliseconds(ticks);
 
+        public static double DateTimeToTicks(DateTime time) => (time - PCStarted).TotalMilliseconds;
+
         static Kernel32() => PCStarted = DateTime.Now.AddMilliseconds(-GetTickCount64());
     }
 }
