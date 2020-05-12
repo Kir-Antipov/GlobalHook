@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GlobalHook.Core", "GlobalHo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GlobalHook.Core.Windows", "GlobalHook.Core.Windows\GlobalHook.Core.Windows.csproj", "{5ECCFB53-578F-4841-8E65-CB146C76F5E1}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GlobalHook.Demo.Console", "GlobalHook.Demo.Console\GlobalHook.Demo.Console.csproj", "{D1F8B844-DF26-426B-95DA-AA0368A59480}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{5ECCFB53-578F-4841-8E65-CB146C76F5E1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5ECCFB53-578F-4841-8E65-CB146C76F5E1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5ECCFB53-578F-4841-8E65-CB146C76F5E1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D1F8B844-DF26-426B-95DA-AA0368A59480}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D1F8B844-DF26-426B-95DA-AA0368A59480}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D1F8B844-DF26-426B-95DA-AA0368A59480}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D1F8B844-DF26-426B-95DA-AA0368A59480}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
