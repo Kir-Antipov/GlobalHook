@@ -3,6 +3,7 @@
     public interface IKeyboardEventArgs : IHookEventArgs
     {
         Keys Key { get; }
+        int RawKey { get; }
         KeyState KeyState { get; }
 
         /// <summary>
