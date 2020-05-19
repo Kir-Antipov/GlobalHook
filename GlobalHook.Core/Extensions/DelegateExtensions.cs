@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 
 namespace GlobalHook.Core.Extensions
 {
@@ -22,9 +23,11 @@ namespace GlobalHook.Core.Extensions
         /// MyEvent -= action.Cast<MyEventType>();
         /// ]]>
         /// </remarks>
-        public static TDelegate Cast<TDelegate>(this Delegate action) where TDelegate : Delegate
+        [return: NotNullIfNotNull("action")]
+        public static TDelegate? Cast<TDelegate>(this Delegate? action) where TDelegate : Delegate
         {
-            _ = action ?? throw new ArgumentNullException(nameof(action));
+            if (action is null)
+                return default;
 
             // `copy` and `action` have different references.
             object copy = action.Clone();

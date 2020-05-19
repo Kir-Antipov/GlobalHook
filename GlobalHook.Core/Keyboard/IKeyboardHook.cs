@@ -7,8 +7,8 @@ namespace GlobalHook.Core.Keyboard
     {
         new event EventHandler<IKeyboardEventArgs>? OnEvent
         {
-            add => ((IHook)this).OnEvent += value!.Cast<EventHandler<IHookEventArgs>>();
-            remove => ((IHook)this).OnEvent -= value!.Cast<EventHandler<IHookEventArgs>>();
+            add => ((IHook)this).OnEvent += value.Cast<EventHandler<IHookEventArgs>>();
+            remove => ((IHook)this).OnEvent -= value.Cast<EventHandler<IHookEventArgs>>();
         }
 
         /// <summary>

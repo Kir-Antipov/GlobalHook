@@ -7,8 +7,8 @@ namespace GlobalHook.Core.Mouse
     {
         new event EventHandler<IMouseEventArgs>? OnEvent
         {
-            add => ((IHook)this).OnEvent += value!.Cast<EventHandler<IHookEventArgs>>();
-            remove => ((IHook)this).OnEvent -= value!.Cast<EventHandler<IHookEventArgs>>();
+            add => ((IHook)this).OnEvent += value.Cast<EventHandler<IHookEventArgs>>();
+            remove => ((IHook)this).OnEvent -= value.Cast<EventHandler<IHookEventArgs>>();
         }
 
         /// <summary>
