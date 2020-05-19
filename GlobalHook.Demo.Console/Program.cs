@@ -27,7 +27,7 @@ namespace GlobalHook.Demo.Console
             // Stop message loop on Ctrl + Shift + S
             keyboardHook.OnEvent += (_, e) =>
             {
-                if (e.Key.Equals(Keys.Control, Keys.Shift, Keys.S))
+                if (e.Key.HasFlags(Keys.Control, Keys.Shift, Keys.S))
                     source.Cancel();
             };
 

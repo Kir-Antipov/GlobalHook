@@ -990,6 +990,6 @@ namespace GlobalHook.Core.Keyboard
 
     public static class KeysExtensions
     {
-        public static bool Equals(this Keys key, params Keys[] keys) => Array.TrueForAll(keys, x => key.HasFlag(x));
+        public static bool HasFlags(this Keys key, params Keys[] keys) => Array.TrueForAll(keys, x => key.HasFlag(x));
     }
 }
