@@ -17,14 +17,25 @@ namespace GlobalHook.Core
         {
             Delegate = (sender, args) => OnEvent?.Invoke(sender, args);
             Hooks = hooks.Where(x => x.CanBeInstalled).ToArray();
-            Array.ForEach(Hooks, x => x.OnEvent += Delegate);
         }
 
-        public void Install() => Array.ForEach(Hooks, x => x.Install());
+        public void Install() => Array.ForEach(Hooks, hook => 
+        { 
+            hook.OnEvent += Delegate;
+            hook.Install(); 
+        });
 
-        public void Install(long threadId) => Array.ForEach(Hooks, x => x.Install(threadId));
+        public void Install(long threadId) => Array.ForEach(Hooks, hook =>
+        {
+            hook.OnEvent += Delegate;
+            hook.Install(threadId);
+        });
 
-        public void Uninstall() => Array.ForEach(Hooks, x => { x.OnEvent -= Delegate; x.Uninstall(); });
+        public void Uninstall() => Array.ForEach(Hooks, hook => 
+        { 
+            hook.OnEvent -= Delegate;
+            hook.Uninstall();
+        });
 
         public void Dispose()
         {
