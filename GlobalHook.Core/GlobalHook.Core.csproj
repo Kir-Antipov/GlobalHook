@@ -4,6 +4,25 @@
     <TargetFramework>netstandard2.1</TargetFramework>
     <Nullable>enable</Nullable>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Authors>Kir_Antipov</Authors>
+    <Company>Kir_Antipov</Company>
+    <PackageId>GlobalHook</PackageId>
+    <Product>GlobalHook</Product>
+    <Copyright>(c) 2020 Kir_Antipov</Copyright>
+    <PackageLicenseFile>LICENSE.md</PackageLicenseFile>
+    <RepositoryUrl>https://github.com/Kir-Antipov/GlobalHook</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/Kir-Antipov/GlobalHook</PackageProjectUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageTags>hook hooks keyboard mouse</PackageTags>
+    <Description>Library that describes primitives for creating hooks (e.g., keyboard hook, mouse hook).</Description>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\LICENSE.md">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+  </ItemGroup>
 
 </Project>

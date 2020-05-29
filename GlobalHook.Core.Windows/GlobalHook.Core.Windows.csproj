@@ -3,10 +3,28 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.1</TargetFramework>
     <Nullable>enable</Nullable>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageId>GlobalHook.Windows</PackageId>
+    <Authors>Kir_Antipov</Authors>
+    <Product>GlobalHook.Windows</Product>
+    <PackageLicenseFile>LICENSE.md</PackageLicenseFile>
+    <Copyright>(c) 2020 Kir_Antipov</Copyright>
+    <RepositoryUrl>https://github.com/Kir-Antipov/GlobalHook</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/Kir-Antipov/GlobalHook</PackageProjectUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageTags>hook hooks keyboard mouse windows</PackageTags>
+    <Description>GlobalHook wrapper for WinAPI hooks.</Description>
   </PropertyGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\GlobalHook.Core\GlobalHook.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\LICENSE.md">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
   </ItemGroup>
 
 </Project>
