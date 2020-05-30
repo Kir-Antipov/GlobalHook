@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Threading;
 
 namespace GlobalHook.Core.MessageLoop
@@ -33,7 +34,11 @@ namespace GlobalHook.Core.MessageLoop
     {
         /// <inheritdoc cref="IMessageLoop.Run(IEnumerable{IHook}, Func{bool, bool})"/>
         /// <param name="loop">Message loop instance.</param>
+        /// <param name="process">Target process.</param>
         public static void Run(this IMessageLoop loop, long processId, Func<bool, bool> goOnPredicate, params IHook[] hooks) => loop.Run(hooks, processId, goOnPredicate);
+
+        /// <inheritdoc cref="Run(IMessageLoop, long, Func{bool, bool}, IHook[])"/>
+        public static void Run(this IMessageLoop loop, Process process, Func<bool, bool> goOnPredicate, params IHook[] hooks) => loop.Run(hooks, process.Id, goOnPredicate);
 
         /// <inheritdoc cref="Run(IMessageLoop, long, Func{bool, bool}, IHook[])"/>
         public static void Run(this IMessageLoop loop, Func<bool, bool> goOnPredicate, params IHook[] hooks) => loop.Run(hooks, goOnPredicate);
@@ -41,12 +46,18 @@ namespace GlobalHook.Core.MessageLoop
         /// <inheritdoc cref="Run(IMessageLoop, long, Func{bool, bool}, IHook[])"/>
         /// <param name="cancellationToken">The message <paramref name="loop"/> will be stopped immediately after the cancel request for this token.</param>
         public static void Run(this IMessageLoop loop, IEnumerable<IHook> hooks, long processId, CancellationToken cancellationToken) => loop.Run(hooks, processId, quit => !(quit || cancellationToken.IsCancellationRequested));
+
+        /// <inheritdoc cref="Run(IMessageLoop, IEnumerable{IHook}, long, CancellationToken)"/>
+        public static void Run(this IMessageLoop loop, IEnumerable<IHook> hooks, Process process, CancellationToken cancellationToken) => loop.Run(hooks, process.Id, quit => !(quit || cancellationToken.IsCancellationRequested));
         
         /// <inheritdoc cref="Run(IMessageLoop, IEnumerable{IHook}, long, CancellationToken)"/>
         public static void Run(this IMessageLoop loop, IEnumerable<IHook> hooks, CancellationToken cancellationToken) => loop.Run(hooks, quit => !(quit || cancellationToken.IsCancellationRequested));
 
         /// <inheritdoc cref="Run(IMessageLoop, IEnumerable{IHook}, long, CancellationToken)"/>
         public static void Run(this IMessageLoop loop, long processId, CancellationToken cancellationToken, params IHook[] hooks) => loop.Run(hooks, processId, quit => !(quit || cancellationToken.IsCancellationRequested));
+
+        /// <inheritdoc cref="Run(IMessageLoop, long, CancellationToken, IHook[])"/>
+        public static void Run(this IMessageLoop loop, Process process, CancellationToken cancellationToken, params IHook[] hooks) => loop.Run(hooks, process.Id, quit => !(quit || cancellationToken.IsCancellationRequested));
         
         /// <inheritdoc cref="Run(IMessageLoop, IEnumerable{IHook}, long, CancellationToken)"/>
         public static void Run(this IMessageLoop loop, CancellationToken cancellationToken, params IHook[] hooks) => loop.Run(hooks, quit => !(quit || cancellationToken.IsCancellationRequested));
@@ -54,8 +65,14 @@ namespace GlobalHook.Core.MessageLoop
         /// <inheritdoc cref="Run(IMessageLoop, long, Func{bool, bool}, IHook[])"/>
         public static void Run(this IMessageLoop loop, long processId, params IHook[] hooks) => loop.Run(hooks, processId, quit => !quit);
 
+        /// <inheritdoc cref="Run(IMessageLoop, long, IHook[])"/>
+        public static void Run(this IMessageLoop loop, Process process, params IHook[] hooks) => loop.Run(hooks, process.Id, quit => !quit);
+
         /// <inheritdoc cref="Run(IMessageLoop, long, Func{bool, bool}, IHook[])"/>
         public static void Run(this IMessageLoop loop, IEnumerable<IHook> hooks, long processId) => loop.Run(hooks, processId, quit => !quit);
+
+        /// <inheritdoc cref="Run(IMessageLoop, IEnumerable{IHook}, long)"/>
+        public static void Run(this IMessageLoop loop, IEnumerable<IHook> hooks, Process process) => loop.Run(hooks, process.Id, quit => !quit);
 
         /// <inheritdoc cref="Run(IMessageLoop, long, Func{bool, bool}, IHook[])"/>
         public static void Run(this IMessageLoop loop, params IHook[] hooks) => loop.Run(hooks, quit => !quit);
