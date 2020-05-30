@@ -10,9 +10,9 @@ namespace GlobalHook.Core
     {
         bool CanBeInstalled { get; }
 
-        void Install();
+        void Install(bool ignoreProcessHasNoWindow = false);
 
-        void Install(long threadId);
+        void Install(long threadId, bool ignoreProcessHasNoWindow = false);
 
         void Uninstall();
 

@@ -6,6 +6,7 @@ using GlobalHook.Core.Windows.Interop.Libs;
 using GlobalHook.Core.Windows.Interop.Structures;
 using System;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Threading;
 
@@ -20,9 +21,9 @@ namespace GlobalHook.Core.Windows.Mouse
         private RawHook? Hook = null;
         private IntPtr Window = IntPtr.Zero;
 
-        public virtual void Install() => Install(0);
+        public virtual void Install(bool ignoreProcessHasNoWindow = false) => Install(0);
 
-        public virtual void Install(long threadId)
+        public virtual void Install(long threadId, bool ignoreProcessHasNoWindow = false)
         {
             if (!CanBeInstalled)
                 throw new PlatformNotSupportedException();
@@ -32,6 +33,9 @@ namespace GlobalHook.Core.Windows.Mouse
 
             if (Hook is { })
                 return;
+
+            if (!ignoreProcessHasNoWindow && Process.GetCurrentProcess().MainWindowHandle == IntPtr.Zero)
+                throw new NotSupportedException($"This process doesn't provide a built-in message loop.\n\nTo successfully install a hook, use `MessageLoop.Run(hook)`.");
 
             Hook = LowLevelHook;
 

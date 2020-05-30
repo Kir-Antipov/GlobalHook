@@ -19,7 +19,7 @@ namespace GlobalHook.Core.Windows.MessageLoop
             for (int i = 0; i < applicableHooks.Length; ++i)
             {
                 applicableHooks[i].OnEvent += action;
-                applicableHooks[i].Install(threadId);
+                applicableHooks[i].Install(threadId, true);
             }
 
             bool quit = false;

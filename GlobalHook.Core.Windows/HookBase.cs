@@ -3,6 +3,7 @@ using GlobalHook.Core.Windows.Interop.Enums;
 using GlobalHook.Core.Windows.Interop.Libs;
 using System;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Runtime.InteropServices;
 
 namespace GlobalHook.Core.Windows
@@ -20,15 +21,18 @@ namespace GlobalHook.Core.Windows
         internal HookBase(HookId hookId) => HookId = hookId;
         protected HookBase(int hookId) => HookId = (HookId)hookId;
 
-        public virtual void Install() => Install(0);
+        public virtual void Install(bool ignoreProcessHasNoWindow = false) => Install(0, ignoreProcessHasNoWindow);
 
-        public virtual void Install(long threadId)
+        public virtual void Install(long threadId, bool ignoreProcessHasNoWindow = false)
         {
             if (!CanBeInstalled)
                 throw new PlatformNotSupportedException();
 
             if (HookHandle != IntPtr.Zero)
                 return;
+
+            if (!ignoreProcessHasNoWindow && Process.GetCurrentProcess().MainWindowHandle == IntPtr.Zero)
+                throw new NotSupportedException($"This process doesn't provide a built-in message loop.\n\nTo successfully install a hook, use `MessageLoop.Run(hook)`.");
 
             Hook = LowLevelHook;
 
