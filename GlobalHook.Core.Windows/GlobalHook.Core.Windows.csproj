@@ -14,6 +14,7 @@
     <RepositoryType>git</RepositoryType>
     <PackageTags>hook hooks keyboard mouse windows</PackageTags>
     <Description>GlobalHook wrapper for WinAPI hooks.</Description>
+    <PackageIcon>icon.png</PackageIcon>
   </PropertyGroup>
 
   <ItemGroup>
@@ -22,6 +23,10 @@
 
   <ItemGroup>
     <None Include="..\LICENSE.md">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+    <None Include="..\media\icon.png">
       <Pack>True</Pack>
       <PackagePath></PackagePath>
     </None>

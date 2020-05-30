@@ -16,10 +16,15 @@
     <RepositoryType>git</RepositoryType>
     <PackageTags>hook hooks keyboard mouse</PackageTags>
     <Description>Library that describes primitives for creating hooks (e.g., keyboard hook, mouse hook).</Description>
+    <PackageIcon>icon.png</PackageIcon>
   </PropertyGroup>
 
   <ItemGroup>
     <None Include="..\LICENSE.md">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+    <None Include="..\media\icon.png">
       <Pack>True</Pack>
       <PackagePath></PackagePath>
     </None>
