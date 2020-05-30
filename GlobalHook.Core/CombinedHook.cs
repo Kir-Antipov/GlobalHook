@@ -19,16 +19,16 @@ namespace GlobalHook.Core
             Hooks = hooks.Where(x => x.CanBeInstalled).ToArray();
         }
 
-        public void Install() => Array.ForEach(Hooks, hook => 
+        public void Install(bool ignoreProcessHasNoWindow = false) => Array.ForEach(Hooks, hook => 
         { 
             hook.OnEvent += Delegate;
-            hook.Install(); 
+            hook.Install(ignoreProcessHasNoWindow); 
         });
 
-        public void Install(long processId) => Array.ForEach(Hooks, hook =>
+        public void Install(long processId, bool ignoreProcessHasNoWindow = false) => Array.ForEach(Hooks, hook =>
         {
             hook.OnEvent += Delegate;
-            hook.Install(processId);
+            hook.Install(processId, ignoreProcessHasNoWindow);
         });
 
         public void Uninstall() => Array.ForEach(Hooks, hook => 
