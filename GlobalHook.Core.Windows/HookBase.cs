@@ -36,19 +36,26 @@ namespace GlobalHook.Core.Windows
 
             Hook = LowLevelHook;
 
-            IntPtr moduleHandle = IntPtr.Zero;
+            IntPtr moduleHandle;
+            int threadId;
             if (processId == 0)
             {
                 if (User32.Handle == IntPtr.Zero)
                     throw new NotSupportedException($"Library '{User32.LibraryName}' is undefined.");
-                moduleHandle = User32.Handle;
+
+                (moduleHandle, threadId) = (User32.Handle, 0);
+            }
+            else
+            {
+                Process process = Process.GetProcessById((int)processId);
+                (moduleHandle, threadId) = (Kernel32.GetModuleHandle(process.MainModule.ModuleName), process.Threads[0].Id);
             }
 
-            HookHandle = User32.SetWindowsHookEx(HookId, Hook, moduleHandle, (int)processId);
+            HookHandle = User32.SetWindowsHookEx(HookId, Hook, moduleHandle, threadId);
             if (HookHandle == IntPtr.Zero)
             {
                 int errorCode = Marshal.GetLastWin32Error();
-                throw new Win32Exception(errorCode, $"Failed to adjust {GetType().Name} for thread {processId}. Error {errorCode}: {new Win32Exception(errorCode).Message}.");
+                throw new Win32Exception(errorCode, $"Failed to adjust {GetType().Name} for process #{processId}. Error {errorCode}: {new Win32Exception(errorCode).Message}");
             }
         }
 
