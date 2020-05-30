@@ -25,10 +25,10 @@ namespace GlobalHook.Core
             hook.Install(); 
         });
 
-        public void Install(long threadId) => Array.ForEach(Hooks, hook =>
+        public void Install(long processId) => Array.ForEach(Hooks, hook =>
         {
             hook.OnEvent += Delegate;
-            hook.Install(threadId);
+            hook.Install(processId);
         });
 
         public void Uninstall() => Array.ForEach(Hooks, hook => 

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -12,7 +13,7 @@ namespace GlobalHook.Core
 
         void Install(bool ignoreProcessHasNoWindow = false);
 
-        void Install(long threadId, bool ignoreProcessHasNoWindow = false);
+        void Install(long processId, bool ignoreProcessHasNoWindow = false);
 
         void Uninstall();
 
@@ -74,5 +75,10 @@ namespace GlobalHook.Core
         }
 
         private static IEnumerable<IHook> LoadFromDirectory(string path, string searchPattern, EnumerationOptions options) => Directory.EnumerateFiles(path, searchPattern, options).SelectMany(LoadFromFile);
+    }
+
+    public static class HookExtensions
+    {
+        public static void Install(this IHook hook, Process process, bool ignoreProcessHasNoWindow = false) => hook.Install(process.Id, ignoreProcessHasNoWindow);
     }
 }

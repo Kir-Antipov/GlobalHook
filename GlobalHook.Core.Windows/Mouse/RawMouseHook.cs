@@ -23,12 +23,12 @@ namespace GlobalHook.Core.Windows.Mouse
 
         public virtual void Install(bool ignoreProcessHasNoWindow = false) => Install(0);
 
-        public virtual void Install(long threadId, bool ignoreProcessHasNoWindow = false)
+        public virtual void Install(long processId, bool ignoreProcessHasNoWindow = false)
         {
             if (!CanBeInstalled)
                 throw new PlatformNotSupportedException();
 
-            if (threadId != 0)
+            if (processId != 0)
                 throw new NotSupportedException("Raw mouse events can't be captured for one specific thread.");
 
             if (Hook is { })

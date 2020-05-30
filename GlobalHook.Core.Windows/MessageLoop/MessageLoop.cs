@@ -11,7 +11,7 @@ namespace GlobalHook.Core.Windows.MessageLoop
     {
         public void Run(IEnumerable<IHook> hooks, Func<bool, bool> goOnPredicate) => Run(hooks, 0, goOnPredicate);
 
-        public void Run(IEnumerable<IHook> hooks, long threadId, Func<bool, bool> goOnPredicate)
+        public void Run(IEnumerable<IHook> hooks, long processId, Func<bool, bool> goOnPredicate)
         {
             IHook[] applicableHooks = hooks.Where(x => x.CanBeInstalled).ToArray();
             EventHandler<IHookEventArgs> action = InvokeOnEvent;
@@ -19,7 +19,7 @@ namespace GlobalHook.Core.Windows.MessageLoop
             for (int i = 0; i < applicableHooks.Length; ++i)
             {
                 applicableHooks[i].OnEvent += action;
-                applicableHooks[i].Install(threadId, true);
+                applicableHooks[i].Install(processId, true);
             }
 
             bool quit = false;
