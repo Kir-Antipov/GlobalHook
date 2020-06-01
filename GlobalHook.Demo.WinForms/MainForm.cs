@@ -20,10 +20,10 @@ namespace GlobalHook.Demo.WinForms
             keyboardHook = new KeyboardHook();
         }
 
-        private void MainForm_Load(object sender, EventArgs e)
+        private void MainForm_Shown(object sender, EventArgs e)
         {
-            mouseHook.Install(true);
-            keyboardHook.Install(true);
+            mouseHook.Install();
+            keyboardHook.Install();
         }
 
         #region Check boxes to set or remove particular event handlers.
