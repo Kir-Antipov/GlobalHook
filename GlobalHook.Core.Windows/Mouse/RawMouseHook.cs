@@ -27,11 +27,11 @@ namespace GlobalHook.Core.Windows.Mouse
             if (!CanBeInstalled)
                 throw new PlatformNotSupportedException();
 
-            if (processId != 0)
-                throw new NotSupportedException("Raw mouse events can't be captured for one specific thread.");
-
             if (Hook is { })
                 return;
+
+            if (processId != 0)
+                ExceptionHelper.ThrowHookMustBeGlobal();
 
             if (!ignoreProcessHasNoWindow)
                 ExceptionHelper.ThrowIfProcessHasNoWindow();

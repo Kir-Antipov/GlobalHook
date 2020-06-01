@@ -13,5 +13,7 @@ namespace GlobalHook.Core.Windows
             if (currentProcessWindowHandle == IntPtr.Zero || currentProcessWindowHandle == Kernel32.GetConsoleWindow())
                 throw new NotSupportedException($"This process doesn't provide a built-in message loop.\n\nTo successfully install a hook, use `MessageLoop.Run(hook)`.");
         }
+
+        public static void ThrowHookMustBeGlobal() => throw new NotSupportedException("Low level hook can't be installed for one specific thread/process.");
     }
 }

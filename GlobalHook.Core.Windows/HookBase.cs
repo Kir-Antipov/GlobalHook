@@ -3,7 +3,6 @@ using GlobalHook.Core.Windows.Interop.Enums;
 using GlobalHook.Core.Windows.Interop.Libs;
 using System;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.Runtime.InteropServices;
 
 namespace GlobalHook.Core.Windows
@@ -28,28 +27,20 @@ namespace GlobalHook.Core.Windows
             if (!CanBeInstalled)
                 throw new PlatformNotSupportedException();
 
-            if (HookHandle != IntPtr.Zero)
+            if (Hook is { })
                 return;
+
+            if (processId != 0)
+                ExceptionHelper.ThrowHookMustBeGlobal();
 
             if (!ignoreProcessHasNoWindow)
                 ExceptionHelper.ThrowIfProcessHasNoWindow();
 
+            if (User32.Handle == IntPtr.Zero)
+                throw new NotSupportedException($"Library '{User32.LibraryName}' is undefined.");
+
             Hook = LowLevelHook;
-
-            IntPtr moduleHandle;
-            int threadId;
-            if (processId == 0)
-            {
-                if (User32.Handle == IntPtr.Zero)
-                    throw new NotSupportedException($"Library '{User32.LibraryName}' is undefined.");
-
-                (moduleHandle, threadId) = (User32.Handle, 0);
-            }
-            else
-            {
-                Process process = Process.GetProcessById((int)processId);
-                (moduleHandle, threadId) = (Kernel32.GetModuleHandle(process.MainModule.ModuleName), process.Threads[0].Id);
-            }
+            (IntPtr moduleHandle, int threadId) = (User32.Handle, 0);
 
             HookHandle = User32.SetWindowsHookEx(HookId, Hook, moduleHandle, threadId);
             if (HookHandle == IntPtr.Zero)
