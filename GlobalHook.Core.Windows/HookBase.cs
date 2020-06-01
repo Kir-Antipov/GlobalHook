@@ -31,8 +31,8 @@ namespace GlobalHook.Core.Windows
             if (HookHandle != IntPtr.Zero)
                 return;
 
-            if (!ignoreProcessHasNoWindow && Process.GetCurrentProcess().MainWindowHandle == IntPtr.Zero)
-                throw new NotSupportedException($"This process doesn't provide a built-in message loop.\n\nTo successfully install a hook, use `MessageLoop.Run(hook)`.");
+            if (!ignoreProcessHasNoWindow)
+                ExceptionHelper.ThrowIfProcessHasNoWindow();
 
             Hook = LowLevelHook;
 

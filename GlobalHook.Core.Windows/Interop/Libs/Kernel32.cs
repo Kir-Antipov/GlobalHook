@@ -18,6 +18,9 @@ namespace GlobalHook.Core.Windows.Interop.Libs
         [DllImport(LibraryName, CharSet = CharSet.Auto, SetLastError = true)]
         public static extern IntPtr GetModuleHandle(string? moduleName);
 
+        [DllImport(LibraryName)]
+        public static extern IntPtr GetConsoleWindow();
+
         public static DateTime TicksToDateTime(double ticks) => PCStarted.AddMilliseconds(ticks);
 
         public static double DateTimeToTicks(DateTime time) => (time - PCStarted).TotalMilliseconds;
