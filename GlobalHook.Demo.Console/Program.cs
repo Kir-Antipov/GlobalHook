@@ -5,7 +5,6 @@ using GlobalHook.Core.Mouse;
 using GlobalHook.Core.Windows.Keyboard;
 using GlobalHook.Core.Windows.MessageLoop;
 using GlobalHook.Core.Windows.Mouse;
-using System;
 using System.Threading;
 
 namespace GlobalHook.Demo.Console
