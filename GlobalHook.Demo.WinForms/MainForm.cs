@@ -3,6 +3,7 @@ using GlobalHook.Core.Mouse;
 using GlobalHook.Core.Windows.Keyboard;
 using GlobalHook.Core.Windows.Mouse;
 using System;
+using System.Runtime.CompilerServices;
 using System.Windows.Forms;
 
 namespace GlobalHook.Demo.WinForms
@@ -28,22 +29,35 @@ namespace GlobalHook.Demo.WinForms
 
         #region Check boxes to set or remove particular event handlers.
 
-        private void checkBoxOnMouseMove_CheckedChanged(object sender, EventArgs e)
+        private void chMouseMove_CheckedChanged(object sender, EventArgs e)
         {
-            if (checkBoxOnMouseMove.Checked)
+            if (chMouseMove.Checked)
             {
                 mouseHook.MouseMove += HookManager_MouseMove;
             }
             else
             {
                 mouseHook.MouseMove -= HookManager_MouseMove;
-                labelMousePosition.Text = "x=?; y=?";
+                lblMousePosition.Text = "x=?; y=?";
             }
         }
 
-        private void checkBoxOnMouseClick_CheckedChanged(object sender, EventArgs e)
+        private void chMouseWheel_CheckedChanged(object sender, EventArgs e)
         {
-            if (checkBoxOnMouseClick.Checked)
+            if (chMouseWheel.Checked)
+            {
+                mouseHook.MouseWheel += HookManager_MouseWheel;
+            }
+            else
+            {
+                mouseHook.MouseWheel -= HookManager_MouseWheel;
+                lblWheel.Text = "Wheel=?";
+            }
+        }
+
+        private void chMouseClick_CheckedChanged(object sender, EventArgs e)
+        {
+            if (chMouseClick.Checked)
             {
                 mouseHook.MouseClick += HookManager_MouseClick;
             }
@@ -53,9 +67,9 @@ namespace GlobalHook.Demo.WinForms
             }
         }
 
-        private void checkBoxOnMouseUp_CheckedChanged(object sender, EventArgs e)
+        private void chMouseUp_CheckedChanged(object sender, EventArgs e)
         {
-            if (checkBoxOnMouseUp.Checked)
+            if (chMouseUp.Checked)
             {
                 mouseHook.MouseUp += HookManager_MouseUp;
             }
@@ -65,9 +79,9 @@ namespace GlobalHook.Demo.WinForms
             }
         }
 
-        private void checkBoxOnMouseDown_CheckedChanged(object sender, EventArgs e)
+        private void chMouseDown_CheckedChanged(object sender, EventArgs e)
         {
-            if (checkBoxOnMouseDown.Checked)
+            if (chMouseDown.Checked)
             {
                 mouseHook.MouseDown += HookManager_MouseDown;
             }
@@ -77,9 +91,9 @@ namespace GlobalHook.Demo.WinForms
             }
         }
 
-        private void checkBoxMouseDoubleClick_CheckedChanged(object sender, EventArgs e)
+        private void chMouseDoubleClick_CheckedChanged(object sender, EventArgs e)
         {
-            if (checkBoxMouseDoubleClick.Checked)
+            if (chMouseDoubleClick.Checked)
             {
                 mouseHook.MouseDoubleClick += HookManager_MouseDoubleClick;
             }
@@ -89,22 +103,9 @@ namespace GlobalHook.Demo.WinForms
             }
         }
 
-        private void checkBoxMouseWheel_CheckedChanged(object sender, EventArgs e)
+        private void chKeyDown_CheckedChanged(object sender, EventArgs e)
         {
-            if (checkBoxMouseWheel.Checked)
-            {
-                mouseHook.MouseWheel += HookManager_MouseWheel;
-            }
-            else
-            {
-                mouseHook.MouseWheel -= HookManager_MouseWheel;
-                labelWheel.Text = "Wheel=?";
-            }
-        }
-
-        private void checkBoxKeyDown_CheckedChanged(object sender, EventArgs e)
-        {
-            if (checkBoxKeyDown.Checked)
+            if (chKeyDown.Checked)
             {
                 keyboardHook.KeyDown += HookManager_KeyDown;
             }
@@ -115,9 +116,9 @@ namespace GlobalHook.Demo.WinForms
         }
 
 
-        private void checkBoxKeyUp_CheckedChanged(object sender, EventArgs e)
+        private void chKeyUp_CheckedChanged(object sender, EventArgs e)
         {
-            if (checkBoxKeyUp.Checked)
+            if (chKeyUp.Checked)
             {
                 keyboardHook.KeyUp += HookManager_KeyUp;
             }
@@ -127,9 +128,9 @@ namespace GlobalHook.Demo.WinForms
             }
         }
 
-        private void checkBoxKeyPress_CheckedChanged(object sender, EventArgs e)
+        private void chKeyPress_CheckedChanged(object sender, EventArgs e)
         {
-            if (checkBoxKeyPress.Checked)
+            if (chKeyPress.Checked)
             {
                 keyboardHook.KeyPress += HookManager_KeyPress;
             }
@@ -145,96 +146,100 @@ namespace GlobalHook.Demo.WinForms
 
         private void HookManager_KeyDown(object sender, IKeyboardEventArgs e)
         {
-            if (chbLockKB.Checked)
+            if (chLockKB.Checked)
             {
                 e.PreventDefault();
             }
-            WriteLog("KeyDown - " + e.Key + (e.DefaultPrevented ? " (Locked)" : ""));
+            WriteLog(e.Key.ToString(), e.DefaultPrevented);
         }
 
         private void HookManager_KeyUp(object sender, IKeyboardEventArgs e)
         {
-            if (chbLockKB.Checked)
+            if (chLockKB.Checked)
             {
                 e.PreventDefault();
             }
-            WriteLog("KeyUp - " + e.Key + (e.DefaultPrevented ? " (Locked)" : ""));
+            WriteLog(e.Key.ToString(), e.DefaultPrevented);
         }
 
         private void HookManager_KeyPress(object sender, IKeyboardEventArgs e)
         {
-            if (chbLockKB.Checked)
+            if (chLockKB.Checked)
             {
                 e.PreventDefault();
             }
-            WriteLog("KeyPress - " + e.Key + (e.DefaultPrevented ? " (Locked)" : ""));
+            WriteLog(e.Key.ToString(), e.DefaultPrevented);
         }
 
         private void HookManager_MouseMove(object sender, IMouseEventArgs e)
         {
-            if (chbLockM.Checked)
+            if (chLockM.Checked)
             {
                 e.PreventDefault();
             }
-            labelMousePosition.Text = string.Format("x={0:0000}; y={1:0000}" + (e.DefaultPrevented ? " (Locked)" : ""), e.Coords.X, e.Coords.Y);
+            lblMousePosition.Text = $"x={e.Coords.X:0000}; y={e.Coords.Y:0000}" + GetLockedStr(e.DefaultPrevented);
         }
 
         private void HookManager_MouseClick(object sender, IMouseEventArgs e)
         {
-            if (chbLockM.Checked)
+            if (chLockM.Checked)
             {
                 e.PreventDefault();
             }
-            WriteLog("MouseClick - " + e.Key + (e.DefaultPrevented ? " (Locked)" : ""));
+            WriteLog(e.Key.ToString(), e.DefaultPrevented);
         }
 
         private void HookManager_MouseUp(object sender, IMouseEventArgs e)
         {
-            if (chbLockM.Checked)
+            if (chLockM.Checked)
             {
                 e.PreventDefault();
             }
-            WriteLog("MouseUp - " + e.Key + (e.DefaultPrevented ? " (Locked)" : ""));
+            WriteLog(e.Key.ToString(), e.DefaultPrevented);
         }
 
         private void HookManager_MouseDown(object sender, IMouseEventArgs e)
         {
-            if (chbLockM.Checked)
+            if (chLockM.Checked)
             {
                 e.PreventDefault();
             }
-            WriteLog("MouseDown - " + e.Key + (e.DefaultPrevented ? " (Locked)" : ""));
+            WriteLog(e.Key.ToString(), e.DefaultPrevented);
         }
 
         private void HookManager_MouseDoubleClick(object sender, IMouseEventArgs e)
         {
-            if (chbLockM.Checked)
+            if (chLockM.Checked)
             {
                 e.PreventDefault();
             }
-            WriteLog("MouseDoubleClick - " + e.Key + (e.DefaultPrevented ? " (Locked)" : ""));
+            WriteLog(e.Key.ToString(), e.DefaultPrevented);
         }
 
         private void HookManager_MouseWheel(object sender, IMouseEventArgs e)
         {
-            if (chbLockM.Checked)
+            if (chLockM.Checked)
             {
                 e.PreventDefault();
             }
-            labelWheel.Text = string.Format("Wheel={0:000}{1}", e.Delta, e.DefaultPrevented ? " (Locked)" : "");
+            lblWheel.Text = $"Wheel={e.Delta:000}" + GetLockedStr(e.DefaultPrevented);
         }
 
-        void WriteLog(string message)
+        void WriteLog(string context, bool isLocked, [CallerMemberName] string eventName = null)
         {
-            textBoxLog.AppendText(message + Environment.NewLine);
-            textBoxLog.ScrollToCaret();
+            eventName = eventName.Substring(eventName.IndexOf("_") + 1);
+
+            string lockedStr = GetLockedStr(isLocked);
+            tbLog.AppendText($"{eventName} - {context}{lockedStr}{Environment.NewLine}");
+            tbLog.ScrollToCaret();
         }
+
+        private static string GetLockedStr(bool isLocked) =>  isLocked ? " (Locked)" : string.Empty;
 
         #endregion
 
-        private void button1_Click(object sender, EventArgs e)
+        private void bAttach_Click(object sender, EventArgs e)
         {
-
             ProcessesForm pl = new ProcessesForm();
             if (pl.ShowDialog() == DialogResult.OK)
             {
@@ -242,8 +247,8 @@ namespace GlobalHook.Demo.WinForms
                 {
                     mouseHook.Install(pl.SelectedProcessInfo.Id);
                     keyboardHook.Install(pl.SelectedProcessInfo.Id);
-                    label1.Text = "Status: Attached to " + pl.SelectedProcessInfo.Title;
-                    button2.Enabled = true;
+                    lblProcess.Text = "Status: Attached to " + pl.SelectedProcessInfo.Title;
+                    bDetach.Enabled = true;
                 }
                 catch
                 {
@@ -253,17 +258,17 @@ namespace GlobalHook.Demo.WinForms
             }
         }
 
-        private void button2_Click(object sender, EventArgs e)
+        private void bDetach_Click(object sender, EventArgs e)
         {
             Detach();
         }
 
         void Detach()
         {
-            button2.Enabled = false;
+            bDetach.Enabled = false;
             mouseHook.Install();
             keyboardHook.Install();
-            label1.Text = "Status: Global";
+            lblProcess.Text = "Status: Global";
         }
 
         private void MainForm_FormClosed(object sender, FormClosedEventArgs e)
