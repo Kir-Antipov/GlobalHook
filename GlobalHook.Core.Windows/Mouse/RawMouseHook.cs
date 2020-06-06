@@ -5,7 +5,6 @@ using GlobalHook.Core.Windows.Interop.Enums;
 using GlobalHook.Core.Windows.Interop.Libs;
 using GlobalHook.Core.Windows.Interop.Structures;
 using System;
-using System.ComponentModel;
 using System.Runtime.InteropServices;
 using System.Threading;
 

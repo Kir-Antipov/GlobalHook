@@ -2,8 +2,6 @@
 using GlobalHook.Core.Windows.Interop.Enums;
 using GlobalHook.Core.Windows.Interop.Libs;
 using System;
-using System.ComponentModel;
-using System.Runtime.InteropServices;
 
 namespace GlobalHook.Core.Windows
 {
