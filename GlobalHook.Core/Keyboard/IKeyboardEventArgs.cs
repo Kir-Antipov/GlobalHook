@@ -11,6 +11,6 @@
         /// </summary>
         char? KeyChar { get; }
 
-        SenderType IHookEventArgs.SenderType => SenderType.Keyboard;
+        HookType IHookEventArgs.HookType => HookType.Keyboard;
     }
 }

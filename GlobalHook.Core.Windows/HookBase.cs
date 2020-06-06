@@ -7,6 +7,8 @@ namespace GlobalHook.Core.Windows
 {
     public abstract class HookBase : IHook
     {
+        public abstract HookType HookType { get; }
+
         public bool CanBeInstalled => Environment.OSVersion.Platform == PlatformID.Win32NT;
 
         public bool Installed => Hook is { };

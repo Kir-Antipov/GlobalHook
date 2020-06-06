@@ -9,6 +9,8 @@ namespace GlobalHook.Core
 {
     public interface IHook : IDisposable
     {
+        HookType HookType { get; }
+
         bool CanBeInstalled { get; }
 
         bool Installed { get; }

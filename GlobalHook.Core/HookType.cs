@@ -1,6 +1,6 @@
 ﻿namespace GlobalHook.Core
 {
-    public enum SenderType
+    public enum HookType
     {
         Undefined,
         Keyboard,

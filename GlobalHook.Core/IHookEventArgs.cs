@@ -10,7 +10,7 @@ namespace GlobalHook.Core
 
         bool CanDefaultBePrevented { get; }
 
-        SenderType SenderType { get; }
+        HookType HookType { get; }
 
         DateTime Time { get; }
     }

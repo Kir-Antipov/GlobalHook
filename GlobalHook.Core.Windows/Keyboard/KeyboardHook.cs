@@ -10,6 +10,8 @@ namespace GlobalHook.Core.Windows.Keyboard
 {
     public class KeyboardHook : HookBase, IKeyboardHook
     {
+        public override HookType HookType => HookType.Keyboard;
+
         public KeyboardHook() : base(HookId.Keyboard) { }
 
         protected override IntPtr LowLevelHook(int nCode, IntPtr wParam, IntPtr lParam)

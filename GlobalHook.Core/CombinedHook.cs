@@ -6,6 +6,8 @@ namespace GlobalHook.Core
 {
     internal class CombinedHook : IHook
     {
+        HookType IHook.HookType => HookType.Undefined;
+
         public bool CanBeInstalled => true;
 
         public bool Installed => Array.TrueForAll(Hooks, x => x.Installed);

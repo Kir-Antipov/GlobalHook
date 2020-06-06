@@ -12,6 +12,8 @@ namespace GlobalHook.Core.Windows.Mouse
 {
     public class RawMouseHook : IMouseHook
     {
+        public HookType HookType => HookType.Mouse;
+
         public bool CanBeInstalled => Environment.OSVersion.Platform == PlatformID.Win32NT;
 
         public bool Installed => Hook is { };

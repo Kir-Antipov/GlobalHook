@@ -21,6 +21,6 @@ namespace GlobalHook.Core.Mouse
         /// </summary>
         bool IsDoubleClick { get; }
 
-        SenderType IHookEventArgs.SenderType => SenderType.Mouse;
+        HookType IHookEventArgs.HookType => HookType.Mouse;
     }
 }

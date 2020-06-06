@@ -5,6 +5,8 @@ namespace GlobalHook.Core.Keyboard
 {
     public interface IKeyboardHook : IHook
     {
+        HookType IHook.HookType => HookType.Keyboard;
+
         new event EventHandler<IKeyboardEventArgs>? OnEvent
         {
             add => ((IHook)this).OnEvent += value.Cast<EventHandler<IHookEventArgs>>();

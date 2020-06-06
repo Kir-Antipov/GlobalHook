@@ -5,6 +5,8 @@ namespace GlobalHook.Core.Mouse
 {
     public interface IMouseHook : IHook
     {
+        HookType IHook.HookType => HookType.Mouse;
+
         new event EventHandler<IMouseEventArgs>? OnEvent
         {
             add => ((IHook)this).OnEvent += value.Cast<EventHandler<IHookEventArgs>>();
