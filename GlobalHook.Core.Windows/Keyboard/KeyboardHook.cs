@@ -1,7 +1,7 @@
 ﻿using GlobalHook.Core.Keyboard;
 using GlobalHook.Core.Windows.Interop.Enums;
 using GlobalHook.Core.Windows.Interop.Libs;
-using GlobalHook.Core.Windows.Interop.Structures;
+using GlobalHook.Core.Windows.Interop.Structures.LowLevel;
 using System;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -20,13 +20,13 @@ namespace GlobalHook.Core.Windows.Keyboard
             KeyState state = (KeyState)wParam;
             if (Enum.IsDefined(typeof(KeyState), state))
             {
-                RawKeyboardState data = Marshal.PtrToStructure<RawKeyboardState>(lParam);
+                KeyboardState data = Marshal.PtrToStructure<KeyboardState>(lParam);
                 prevented = Handle(state, data);
             }
             return prevented ? (IntPtr)1 : User32.CallNextHookEx(IntPtr.Zero, nCode, wParam, lParam);
         }
 
-        private bool Handle(KeyState state, RawKeyboardState data)
+        private bool Handle(KeyState state, KeyboardState data)
         {
             Keys key = data.Key;
             char? keyChar = null;

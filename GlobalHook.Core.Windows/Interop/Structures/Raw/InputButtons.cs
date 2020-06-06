@@ -1,10 +1,10 @@
 ﻿using GlobalHook.Core.Windows.Interop.Enums;
 using System.Runtime.InteropServices;
 
-namespace GlobalHook.Core.Windows.Interop.Structures
+namespace GlobalHook.Core.Windows.Interop.Structures.Raw
 {
     [StructLayout(LayoutKind.Explicit)]
-    internal struct RawInputButtons
+    internal struct InputButtons
     {
         [FieldOffset(0)]
         public uint Buttons;

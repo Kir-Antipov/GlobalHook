@@ -2,6 +2,7 @@
 using GlobalHook.Core.Windows.Interop.Delegates;
 using GlobalHook.Core.Windows.Interop.Enums;
 using GlobalHook.Core.Windows.Interop.Structures;
+using GlobalHook.Core.Windows.Interop.Structures.Raw;
 using System;
 using System.ComponentModel;
 using System.Runtime.InteropServices;
@@ -30,17 +31,17 @@ namespace GlobalHook.Core.Windows.Interop.Libs
         public static extern IntPtr CallNextHookEx(IntPtr hHook, int code, IntPtr wParam, IntPtr lParam);
 
         [DllImport(LibraryName)]
-        public static extern int GetMessage(out RawMessage lpMsg, IntPtr hWnd, uint wMsgFilterMin, uint wMsgFilterMax);
+        public static extern int GetMessage(out Message lpMsg, IntPtr hWnd, uint wMsgFilterMin, uint wMsgFilterMax);
 
         [DllImport(LibraryName)]
         [return: MarshalAs(UnmanagedType.Bool)]
-        public static extern bool PeekMessage(out RawMessage lpMsg, IntPtr hWnd, uint wMsgFilterMin, uint wMsgFilterMax, uint wRemoveMsg);
+        public static extern bool PeekMessage(out Message lpMsg, IntPtr hWnd, uint wMsgFilterMin, uint wMsgFilterMax, uint wRemoveMsg);
 
         [DllImport(LibraryName)]
-        public static extern bool TranslateMessage(in RawMessage lpMsg);
+        public static extern bool TranslateMessage(in Message lpMsg);
 
         [DllImport(LibraryName)]
-        public static extern IntPtr DispatchMessage(in RawMessage lpMsg);
+        public static extern IntPtr DispatchMessage(in Message lpMsg);
 
         [DllImport(LibraryName, SetLastError = true)]
         [return: MarshalAs(UnmanagedType.U2)]
@@ -53,13 +54,13 @@ namespace GlobalHook.Core.Windows.Interop.Libs
         public static extern bool DestroyWindow(IntPtr hWnd);
 
         [DllImport(LibraryName, SetLastError = true)]
-        public static extern bool RegisterRawInputDevices([MarshalAs(UnmanagedType.LPArray)] RawInputDevice[] pRawInputDevices, int uiNumDevices, int cbSize);
+        public static extern bool RegisterRawInputDevices([MarshalAs(UnmanagedType.LPArray)] InputDevice[] pRawInputDevices, int uiNumDevices, int cbSize);
 
         [DllImport(LibraryName)]
         public static extern IntPtr DefWindowProc(IntPtr hWnd, uint uMsg, IntPtr wParam, IntPtr lParam);
 
         [DllImport(LibraryName)]
-        public static extern int GetRawInputData(IntPtr hRawInput, int uiCommand, out RawInput pData, ref int pcbSize, int cbSizeHeader);
+        public static extern int GetRawInputData(IntPtr hRawInput, int uiCommand, out Input pData, ref int pcbSize, int cbSizeHeader);
 
         [DllImport(LibraryName)]
         public static extern short GetKeyState(Keys key);

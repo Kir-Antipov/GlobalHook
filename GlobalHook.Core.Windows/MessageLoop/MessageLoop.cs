@@ -1,6 +1,6 @@
 ﻿using GlobalHook.Core.MessageLoop;
 using GlobalHook.Core.Windows.Interop.Libs;
-using GlobalHook.Core.Windows.Interop.Structures;
+using GlobalHook.Core.Windows.Interop.Structures.Raw;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,9 +25,9 @@ namespace GlobalHook.Core.Windows.MessageLoop
             bool quit = false;
             while (goOnPredicate(quit))
             {
-                while (User32.PeekMessage(out RawMessage msg, IntPtr.Zero, 0, 0, 1))
+                while (User32.PeekMessage(out Message msg, IntPtr.Zero, 0, 0, 1))
                 {
-                    if (msg.Message == 0x0012)
+                    if (msg.Command == 0x0012)
                     {
                         quit = true;
                         break;

@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 
-namespace GlobalHook.Core.Windows.Interop.Structures
+namespace GlobalHook.Core.Windows.Interop.Structures.Raw
 {
     [StructLayout(LayoutKind.Sequential)]
-    internal struct RawInputHeader
+    internal struct InputHeader
     {
         public int Type;
         public int Size;

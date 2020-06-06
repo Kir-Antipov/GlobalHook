@@ -4,6 +4,7 @@ using GlobalHook.Core.Windows.Interop.Delegates;
 using GlobalHook.Core.Windows.Interop.Enums;
 using GlobalHook.Core.Windows.Interop.Libs;
 using GlobalHook.Core.Windows.Interop.Structures;
+using GlobalHook.Core.Windows.Interop.Structures.Raw;
 using System;
 using System.Runtime.InteropServices;
 using System.Threading;
@@ -55,7 +56,7 @@ namespace GlobalHook.Core.Windows.Mouse
             if (Window == IntPtr.Zero)
                 ExceptionHelper.ThrowLastWin32Error();
 
-            bool registered = User32.RegisterRawInputDevices(new[] { new RawInputDevice { UsagePage = 0x01, Usage = 0x02, Flags = 0x00000100, WindowHandle = Window } }, 1, Marshal.SizeOf<RawInputDevice>());
+            bool registered = User32.RegisterRawInputDevices(new[] { new InputDevice { UsagePage = 0x01, Usage = 0x02, Flags = 0x00000100, WindowHandle = Window } }, 1, Marshal.SizeOf<InputDevice>());
             if (!registered)
                 ExceptionHelper.ThrowLastWin32Error();
 
@@ -79,8 +80,8 @@ namespace GlobalHook.Core.Windows.Mouse
             if (msg != 0x00FF)
                 return User32.DefWindowProc(hWnd, msg, wParam, lParam);
 
-            int size = Marshal.SizeOf<RawInput>();
-            size = User32.GetRawInputData(lParam, 0x10000003, out RawInput raw, ref size, Marshal.SizeOf<RawInputHeader>());
+            int size = Marshal.SizeOf<Input>();
+            size = User32.GetRawInputData(lParam, 0x10000003, out Input raw, ref size, Marshal.SizeOf<InputHeader>());
             if (size == -1 || raw.Header.Type != 0)
                 return IntPtr.Zero;
 
@@ -89,7 +90,7 @@ namespace GlobalHook.Core.Windows.Mouse
             return IntPtr.Zero;
         }
 
-        private void Handle(DateTime time, RawMouseButtons state, RawInputMouse data)
+        private void Handle(DateTime time, RawMouseButtons state, InputMouse data)
         {
             IPoint coords = new Point(data.X, data.Y, !data.Flags.HasFlag(RawMouseFlags.MoveAbsolute));
 

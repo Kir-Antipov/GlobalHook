@@ -1,16 +1,16 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 
-namespace GlobalHook.Core.Windows.Interop.Structures
+namespace GlobalHook.Core.Windows.Interop.Structures.Raw
 {
     [StructLayout(LayoutKind.Sequential)]
-    internal struct RawMessage
+    internal struct Message
     {
         public IntPtr Handler;
-        public uint Message;
+        public uint Command;
         public UIntPtr WParam;
         public IntPtr LParam;
         public int Time;
-        public RawPoint Point;
+        public Point Point;
     }
 }

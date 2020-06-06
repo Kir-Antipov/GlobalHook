@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 
-namespace GlobalHook.Core.Windows.Interop.Structures
+namespace GlobalHook.Core.Windows.Interop.Structures.Raw
 {
     [StructLayout(LayoutKind.Sequential)]
-    internal struct RawInputDevice
+    internal struct InputDevice
     {
         public ushort UsagePage;
         public ushort Usage;

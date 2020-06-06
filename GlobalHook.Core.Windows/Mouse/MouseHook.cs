@@ -2,7 +2,7 @@
 using GlobalHook.Core.Mouse;
 using GlobalHook.Core.Windows.Interop.Enums;
 using GlobalHook.Core.Windows.Interop.Libs;
-using GlobalHook.Core.Windows.Interop.Structures;
+using GlobalHook.Core.Windows.Interop.Structures.LowLevel;
 using System;
 using System.Runtime.InteropServices;
 using System.Threading;
@@ -23,13 +23,13 @@ namespace GlobalHook.Core.Windows.Mouse
             RawMouseMessages state = (RawMouseMessages)wParam;
             if (Enum.IsDefined(typeof(RawMouseMessages), state))
             {
-                RawMouseState data = Marshal.PtrToStructure<RawMouseState>(lParam);
+                MouseState data = Marshal.PtrToStructure<MouseState>(lParam);
                 prevented = Handle(state, data);
             }
             return prevented ? (IntPtr)1 : User32.CallNextHookEx(IntPtr.Zero, nCode, wParam, lParam);
         }
 
-        private bool Handle(RawMouseMessages state, RawMouseState data)
+        private bool Handle(RawMouseMessages state, MouseState data)
         {
             bool prevented = false;
 

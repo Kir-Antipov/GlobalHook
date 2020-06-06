@@ -2,10 +2,10 @@
 using System;
 using System.Runtime.InteropServices;
 
-namespace GlobalHook.Core.Windows.Interop.Structures
+namespace GlobalHook.Core.Windows.Interop.Structures.LowLevel
 {
     [StructLayout(LayoutKind.Sequential)]
-    internal struct RawKeyboardState
+    internal struct KeyboardState
     {
         public Keys Key;
         public int ScanCode;

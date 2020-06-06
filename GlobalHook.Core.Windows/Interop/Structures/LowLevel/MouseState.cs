@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 
-namespace GlobalHook.Core.Windows.Interop.Structures
+namespace GlobalHook.Core.Windows.Interop.Structures.LowLevel
 {
     [StructLayout(LayoutKind.Sequential)]
-    internal struct RawMouseState
+    internal struct MouseState
     {
-        public RawPoint Point;
+        public Point Point;
         public uint Data;
         public int Flags;
         public int Time;
