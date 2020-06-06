@@ -44,6 +44,9 @@ namespace GlobalHook.Core.Windows.Interop.Libs
         public static extern IntPtr DispatchMessage(in Message lpMsg);
 
         [DllImport(LibraryName, SetLastError = true)]
+        public static extern int GetWindowThreadProcessId(IntPtr hWnd, out int lpdwProcessId);
+
+        [DllImport(LibraryName, SetLastError = true)]
         [return: MarshalAs(UnmanagedType.U2)]
         public static extern ushort RegisterClassW(in WindowClasses lpwcx);
 

@@ -17,6 +17,8 @@ namespace GlobalHook.Core.Windows.Mouse
 
         public bool CanBeInstalled => Environment.OSVersion.Platform == PlatformID.Win32NT;
 
+        public bool CanBeInstalledDirectly => false;
+
         public bool Installed => Hook is { };
 
         private int LastLeftClick = 0;

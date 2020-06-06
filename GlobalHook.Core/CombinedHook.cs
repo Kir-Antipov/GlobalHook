@@ -10,6 +10,8 @@ namespace GlobalHook.Core
 
         public bool CanBeInstalled => true;
 
+        public bool CanBeInstalledDirectly { get; }
+
         public bool Installed => Array.TrueForAll(Hooks, x => x.Installed);
 
         public event EventHandler<IHookEventArgs>? OnEvent;
@@ -21,6 +23,7 @@ namespace GlobalHook.Core
         {
             Delegate = (sender, args) => OnEvent?.Invoke(sender, args);
             Hooks = hooks.Where(x => x.CanBeInstalled).ToArray();
+            CanBeInstalledDirectly = Array.TrueForAll(Hooks, x => x.CanBeInstalledDirectly);
         }
 
         public void Install(bool ignoreProcessHasNoWindow = false) => Array.ForEach(Hooks, hook => 

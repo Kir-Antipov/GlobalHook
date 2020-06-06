@@ -2,6 +2,7 @@
 using GlobalHook.Core.Windows.Interop.Enums;
 using GlobalHook.Core.Windows.Interop.Libs;
 using System;
+using System.Diagnostics;
 
 namespace GlobalHook.Core.Windows
 {
@@ -10,6 +11,8 @@ namespace GlobalHook.Core.Windows
         public abstract HookType HookType { get; }
 
         public bool CanBeInstalled => Environment.OSVersion.Platform == PlatformID.Win32NT;
+
+        public abstract bool CanBeInstalledDirectly { get; }
 
         public bool Installed => Hook is { };
 
@@ -32,17 +35,28 @@ namespace GlobalHook.Core.Windows
             if (Installed)
                 ExceptionHelper.ThrowHookIsAlreadyInstalled();
 
-            if (processId != 0)
+            if (processId != 0 && !CanBeInstalledDirectly)
                 ExceptionHelper.ThrowHookMustBeGlobal();
 
             if (!ignoreProcessHasNoWindow)
                 ExceptionHelper.ThrowIfProcessHasNoWindow();
 
-            if (User32.Handle == IntPtr.Zero)
-                ExceptionHelper.ThrowLibraryWasNotLoaded(User32.LibraryName);
+            IntPtr moduleHandle;
+            int threadId;
+            if (processId == 0)
+            {
+                if (User32.Handle == IntPtr.Zero)
+                    ExceptionHelper.ThrowLibraryWasNotLoaded(User32.LibraryName);
+
+                (moduleHandle, threadId) = (User32.Handle, 0);
+            }
+            else
+            {
+                Process process = Process.GetProcessById((int)processId);
+                (moduleHandle, threadId) = (Kernel32.GetModuleHandle(process.MainModule.ModuleName), User32.GetWindowThreadProcessId(process.MainWindowHandle, out _));
+            }
 
             Hook = LowLevelHook;
-            (IntPtr moduleHandle, int threadId) = (User32.Handle, 0);
 
             HookHandle = User32.SetWindowsHookEx(HookId, Hook, moduleHandle, threadId);
             if (HookHandle == IntPtr.Zero)

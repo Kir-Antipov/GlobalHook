@@ -13,6 +13,8 @@ namespace GlobalHook.Core
 
         bool CanBeInstalled { get; }
 
+        bool CanBeInstalledDirectly { get; }
+
         bool Installed { get; }
 
         void Install(bool ignoreProcessHasNoWindow = false);

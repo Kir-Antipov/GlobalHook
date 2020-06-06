@@ -12,6 +12,8 @@ namespace GlobalHook.Core.Windows.Keyboard
     {
         public override HookType HookType => HookType.Keyboard;
 
+        public override bool CanBeInstalledDirectly => false;
+
         public KeyboardHook() : base(HookId.Keyboard) { }
 
         protected override IntPtr LowLevelHook(int nCode, IntPtr wParam, IntPtr lParam)
