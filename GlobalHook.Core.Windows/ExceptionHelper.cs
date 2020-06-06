@@ -15,5 +15,7 @@ namespace GlobalHook.Core.Windows
         }
 
         public static void ThrowHookMustBeGlobal() => throw new NotSupportedException("Low level hook can't be installed for one specific thread/process.");
+
+        public static void ThrowHookIsAlreadyInstalled() => throw new InvalidOperationException("The hook is already installed.");
     }
 }

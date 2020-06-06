@@ -11,6 +11,8 @@ namespace GlobalHook.Core.Windows
     {
         public bool CanBeInstalled => Environment.OSVersion.Platform == PlatformID.Win32NT;
 
+        public bool Installed => Hook is { };
+
         private readonly HookId HookId;
         private Hook? Hook = null;
         private IntPtr HookHandle = IntPtr.Zero;
@@ -27,8 +29,8 @@ namespace GlobalHook.Core.Windows
             if (!CanBeInstalled)
                 throw new PlatformNotSupportedException();
 
-            if (Hook is { })
-                return;
+            if (Installed)
+                ExceptionHelper.ThrowHookIsAlreadyInstalled();
 
             if (processId != 0)
                 ExceptionHelper.ThrowHookMustBeGlobal();
@@ -45,6 +47,7 @@ namespace GlobalHook.Core.Windows
             HookHandle = User32.SetWindowsHookEx(HookId, Hook, moduleHandle, threadId);
             if (HookHandle == IntPtr.Zero)
             {
+                Hook = null;
                 int errorCode = Marshal.GetLastWin32Error();
                 throw new Win32Exception(errorCode, $"Failed to adjust {GetType().Name} for process #{processId}. Error {errorCode}: {new Win32Exception(errorCode).Message}");
             }
@@ -52,7 +55,7 @@ namespace GlobalHook.Core.Windows
 
         public virtual void Uninstall()
         {
-            if (HookHandle == IntPtr.Zero)
+            if (!Installed)
                 return;
 
             User32.UnhookWindowsHookEx(HookHandle);

@@ -8,6 +8,8 @@ namespace GlobalHook.Core
     {
         public bool CanBeInstalled => true;
 
+        public bool Installed => Array.TrueForAll(Hooks, x => x.Installed);
+
         public event EventHandler<IHookEventArgs>? OnEvent;
 
         private readonly IHook[] Hooks;

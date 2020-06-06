@@ -15,6 +15,8 @@ namespace GlobalHook.Core.Windows.Mouse
     {
         public bool CanBeInstalled => Environment.OSVersion.Platform == PlatformID.Win32NT;
 
+        public bool Installed => Hook is { };
+
         private int LastLeftClick = 0;
 
         private RawHook? Hook = null;
@@ -27,8 +29,8 @@ namespace GlobalHook.Core.Windows.Mouse
             if (!CanBeInstalled)
                 throw new PlatformNotSupportedException();
 
-            if (Hook is { })
-                return;
+            if (Installed)
+                ExceptionHelper.ThrowHookIsAlreadyInstalled();
 
             if (processId != 0)
                 ExceptionHelper.ThrowHookMustBeGlobal();
@@ -36,12 +38,10 @@ namespace GlobalHook.Core.Windows.Mouse
             if (!ignoreProcessHasNoWindow)
                 ExceptionHelper.ThrowIfProcessHasNoWindow();
 
-            Hook = LowLevelHook;
-
             string name = Guid.NewGuid().ToString();
             WindowClasses windowClass = new WindowClasses
             {
-                Hook = Hook,
+                Hook = LowLevelHook,
                 Module = Kernel32.GetModuleHandle(null),
                 ClassName = $"{name} Class",
             };
@@ -57,11 +57,13 @@ namespace GlobalHook.Core.Windows.Mouse
             bool registered = User32.RegisterRawInputDevices(new[] { new RawInputDevice { UsagePage = 0x01, Usage = 0x02, Flags = 0x00000100, WindowHandle = Window } }, 1, Marshal.SizeOf<RawInputDevice>());
             if (!registered)
                 throw new Win32Exception(Marshal.GetLastWin32Error());
+
+            Hook = windowClass.Hook;
         }
 
         public void Uninstall()
         {
-            if (Hook is null)
+            if (!Installed)
                 return;
 
             User32.DestroyWindow(Window);
