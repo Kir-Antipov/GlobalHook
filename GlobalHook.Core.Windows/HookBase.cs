@@ -27,7 +27,7 @@ namespace GlobalHook.Core.Windows
         public virtual void Install(long processId, bool ignoreProcessHasNoWindow = false)
         {
             if (!CanBeInstalled)
-                throw new PlatformNotSupportedException();
+                ExceptionHelper.ThrowHookCantBeInstalled();
 
             if (Installed)
                 ExceptionHelper.ThrowHookIsAlreadyInstalled();
@@ -39,7 +39,7 @@ namespace GlobalHook.Core.Windows
                 ExceptionHelper.ThrowIfProcessHasNoWindow();
 
             if (User32.Handle == IntPtr.Zero)
-                throw new NotSupportedException($"Library '{User32.LibraryName}' is undefined.");
+                ExceptionHelper.ThrowLibraryWasNotLoaded(User32.LibraryName);
 
             Hook = LowLevelHook;
             (IntPtr moduleHandle, int threadId) = (User32.Handle, 0);
@@ -48,8 +48,7 @@ namespace GlobalHook.Core.Windows
             if (HookHandle == IntPtr.Zero)
             {
                 Hook = null;
-                int errorCode = Marshal.GetLastWin32Error();
-                throw new Win32Exception(errorCode, $"Failed to adjust {GetType().Name} for process #{processId}. Error {errorCode}: {new Win32Exception(errorCode).Message}");
+                ExceptionHelper.ThrowLastWin32Error((code, msg) => $"Failed to adjust {GetType().Name} for process #{processId}. Error {code}: {msg}");
             }
         }
 

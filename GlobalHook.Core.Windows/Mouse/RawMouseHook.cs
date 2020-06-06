@@ -27,7 +27,7 @@ namespace GlobalHook.Core.Windows.Mouse
         public virtual void Install(long processId, bool ignoreProcessHasNoWindow = false)
         {
             if (!CanBeInstalled)
-                throw new PlatformNotSupportedException();
+                ExceptionHelper.ThrowHookCantBeInstalled();
 
             if (Installed)
                 ExceptionHelper.ThrowHookIsAlreadyInstalled();
@@ -48,15 +48,15 @@ namespace GlobalHook.Core.Windows.Mouse
 
             ushort classId = User32.RegisterClassW(windowClass);
             if (classId == 0)
-                throw new Win32Exception(Marshal.GetLastWin32Error());
+                ExceptionHelper.ThrowLastWin32Error();
 
             Window = User32.CreateWindowExW(0, windowClass.ClassName, name, 0, 0, 0, 0, 0, new IntPtr(-3), IntPtr.Zero, IntPtr.Zero, IntPtr.Zero);
             if (Window == IntPtr.Zero)
-                throw new Win32Exception(Marshal.GetLastWin32Error());
+                ExceptionHelper.ThrowLastWin32Error();
 
             bool registered = User32.RegisterRawInputDevices(new[] { new RawInputDevice { UsagePage = 0x01, Usage = 0x02, Flags = 0x00000100, WindowHandle = Window } }, 1, Marshal.SizeOf<RawInputDevice>());
             if (!registered)
-                throw new Win32Exception(Marshal.GetLastWin32Error());
+                ExceptionHelper.ThrowLastWin32Error();
 
             Hook = windowClass.Hook;
         }
