@@ -27,9 +27,9 @@ namespace GlobalHook.Core
 
         event EventHandler<IHookEventArgs>? OnEvent;
 
-        public static IHook Combine(params IHook[] loggers) => new CombinedHook(loggers);
+        public static IHook Combine(IEnumerable<IHook> hooks) => new CombinedHook(hooks);
 
-        public static IHook Combine(IEnumerable<IHook> loggers) => new CombinedHook(loggers);
+        public static IHook Combine(params IHook[] hooks) => Combine((IEnumerable<IHook>)hooks);
 
         public static IEnumerable<IHook> Load(Assembly assembly) => assembly
             .ExportedTypes
@@ -60,16 +60,6 @@ namespace GlobalHook.Core
             throw new FileNotFoundException(path);
         }
 
-        public static IHook LoadCombined(Assembly assembly) => Combine(Load(assembly));
-
-        public static IHook LoadCombined(string path) => Combine(Load(path));
-
-        public static IHook LoadCombined(string directory, string searchPattern) => Combine(Load(directory, searchPattern));
-
-        public static IHook LoadCombined(string directory, string searchPattern, EnumerationOptions options) => Combine(Load(directory, searchPattern, options));
-
-        public static IHook LoadCombined(string directory, string searchPattern, SearchOption options) => Combine(Load(directory, searchPattern, options));
-
         private static IEnumerable<IHook> LoadFromFile(string path)
         {
             try
@@ -88,5 +78,7 @@ namespace GlobalHook.Core
     public static class HookExtensions
     {
         public static void Install(this IHook hook, Process process, bool ignoreProcessHasNoWindow = false) => hook.Install(process.Id, ignoreProcessHasNoWindow);
+
+        public static IHook Combine(this IEnumerable<IHook> hooks) => IHook.Combine(hooks);
     }
 }
