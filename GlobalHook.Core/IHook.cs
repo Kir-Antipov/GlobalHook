@@ -13,7 +13,7 @@ namespace GlobalHook.Core
 
         bool CanBeInstalled { get; }
 
-        bool CanBeInstalledDirectly { get; }
+        bool CanBeInstalledIntoProcess { get; }
 
         bool Installed { get; }
 

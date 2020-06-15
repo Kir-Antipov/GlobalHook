@@ -12,7 +12,7 @@ namespace GlobalHook.Core.Windows.Keyboard
     {
         public override HookType HookType => HookType.Keyboard;
 
-        public override bool CanBeInstalledDirectly => false;
+        public override bool CanBeInstalledIntoProcess => false;
 
         public KeyboardHook() : base(HookId.Keyboard) { }
 

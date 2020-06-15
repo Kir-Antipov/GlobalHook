@@ -13,7 +13,7 @@ namespace GlobalHook.Core.Windows.Mouse
     {
         public override HookType HookType => HookType.Mouse;
 
-        public override bool CanBeInstalledDirectly => false;
+        public override bool CanBeInstalledIntoProcess => false;
 
         private int LastLeftClick = 0;
 

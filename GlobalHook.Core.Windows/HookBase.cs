@@ -12,7 +12,7 @@ namespace GlobalHook.Core.Windows
 
         public bool CanBeInstalled => Environment.OSVersion.Platform == PlatformID.Win32NT;
 
-        public abstract bool CanBeInstalledDirectly { get; }
+        public abstract bool CanBeInstalledIntoProcess { get; }
 
         public bool Installed => Hook is { };
 
@@ -35,7 +35,7 @@ namespace GlobalHook.Core.Windows
             if (Installed)
                 ExceptionHelper.ThrowHookIsAlreadyInstalled();
 
-            if (processId != 0 && !CanBeInstalledDirectly)
+            if (processId != 0 && !CanBeInstalledIntoProcess)
                 ExceptionHelper.ThrowHookMustBeGlobal();
 
             if (!ignoreProcessHasNoWindow)
