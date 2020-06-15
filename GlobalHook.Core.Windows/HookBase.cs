@@ -12,6 +12,8 @@ namespace GlobalHook.Core.Windows
 
         public bool CanBeInstalled => Environment.OSVersion.Platform == PlatformID.Win32NT;
 
+        public bool CanPreventDefault => true;
+
         public abstract bool CanBeInstalledIntoProcess { get; }
 
         public bool IsInstalled => Hook is { };

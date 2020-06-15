@@ -19,6 +19,8 @@ namespace GlobalHook.Core.Windows.Mouse
 
         public bool CanBeInstalledIntoProcess => false;
 
+        public bool CanPreventDefault => false;
+
         public bool IsInstalled => Hook is { };
 
         private int LastLeftClick = 0;

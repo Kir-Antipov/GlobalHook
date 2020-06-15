@@ -12,6 +12,8 @@ namespace GlobalHook.Core
 
         public bool CanBeInstalledIntoProcess { get; }
 
+        public bool CanPreventDefault { get; }
+
         public bool IsInstalled => Array.TrueForAll(Hooks, x => x.IsInstalled);
 
         public event EventHandler<IHookEventArgs>? OnEvent;
@@ -24,6 +26,7 @@ namespace GlobalHook.Core
             Delegate = (sender, args) => OnEvent?.Invoke(sender, args);
             Hooks = hooks.Where(x => x.CanBeInstalled).ToArray();
             CanBeInstalledIntoProcess = Array.TrueForAll(Hooks, x => x.CanBeInstalledIntoProcess);
+            CanPreventDefault = Array.TrueForAll(Hooks, x => x.CanPreventDefault);
 
             HashSet<HookType> hookTypes = new HashSet<HookType>(Array.ConvertAll(Hooks, hook => hook.HookType));
             HookType = hookTypes.Count switch
