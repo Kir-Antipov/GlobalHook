@@ -11,23 +11,23 @@ namespace GlobalHook.Core.Windows.Keyboard
         public char? KeyChar { get; }
 
         public bool DefaultPrevented { get; private set; }
-        public bool CanDefaultBePrevented { get; }
+        public bool CanPreventDefault { get; }
 
         public DateTime Time { get; }
 
-        public KeyboardEventArgs(Keys key, KeyState keyState, char? keyChar, DateTime time, bool canDefaultBePrevented = true)
+        public KeyboardEventArgs(Keys key, KeyState keyState, char? keyChar, DateTime time, bool canPreventDefault = true)
         {
             Key = key;
             KeyState = keyState;
             KeyChar = keyChar;
             Time = time;
             DefaultPrevented = false;
-            CanDefaultBePrevented = canDefaultBePrevented;
+            CanPreventDefault = canPreventDefault;
         }
 
         public void PreventDefault()
         {
-            if (!CanDefaultBePrevented)
+            if (!CanPreventDefault)
                 throw new NotSupportedException();
 
             DefaultPrevented = true;

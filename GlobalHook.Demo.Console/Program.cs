@@ -33,13 +33,13 @@ namespace GlobalHook.Demo.Console
             // Disable 'M'
             keyboardHook.OnEvent += (_, e) =>
             {
-                if (e.CanDefaultBePrevented && e.Key.HasFlag(Keys.M))
+                if (e.CanPreventDefault && e.Key.HasFlag(Keys.M))
                     e.PreventDefault();
             };
             // Disable middle mouse button
             mouseHook.OnEvent += (_, e) =>
             {
-                if (e.CanDefaultBePrevented && e.MouseEventType == MouseEventType.Key && e.Key == MouseButtons.Middle)
+                if (e.CanPreventDefault && e.MouseEventType == MouseEventType.Key && e.Key == MouseButtons.Middle)
                     e.PreventDefault();
             };
 

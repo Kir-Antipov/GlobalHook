@@ -8,7 +8,7 @@ namespace GlobalHook.Core
 
         void PreventDefault();
 
-        bool CanDefaultBePrevented { get; }
+        bool CanPreventDefault { get; }
 
         HookType HookType { get; }
 

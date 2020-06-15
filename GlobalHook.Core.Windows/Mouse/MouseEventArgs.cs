@@ -16,12 +16,12 @@ namespace GlobalHook.Core.Windows.Mouse
         public KeyState KeyState { get; }
         public bool IsDoubleClick { get; }
 
-        public bool CanDefaultBePrevented { get; }
+        public bool CanPreventDefault { get; }
         public bool DefaultPrevented { get; private set; }
 
         public DateTime Time { get; }
 
-        public MouseEventArgs(MouseEventType eventType, IPoint coords, int delta, MouseButtons key, KeyState keyState, bool isDoubleClick, DateTime time, bool canDefaultBePrevented = true)
+        public MouseEventArgs(MouseEventType eventType, IPoint coords, int delta, MouseButtons key, KeyState keyState, bool isDoubleClick, DateTime time, bool canPreventDefault = true)
         {
             MouseEventType = eventType;
             Coords = coords;
@@ -31,12 +31,12 @@ namespace GlobalHook.Core.Windows.Mouse
             IsDoubleClick = isDoubleClick;
             Time = time;
             DefaultPrevented = false;
-            CanDefaultBePrevented = canDefaultBePrevented;
+            CanPreventDefault = canPreventDefault;
         }
 
         public void PreventDefault()
         {
-            if (!CanDefaultBePrevented)
+            if (!CanPreventDefault)
                 throw new NotSupportedException();
 
             DefaultPrevented = true;
