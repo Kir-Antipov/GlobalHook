@@ -19,7 +19,7 @@ namespace GlobalHook.Core.Windows.Mouse
 
         public bool CanBeInstalledIntoProcess => false;
 
-        public bool Installed => Hook is { };
+        public bool IsInstalled => Hook is { };
 
         private int LastLeftClick = 0;
 
@@ -33,7 +33,7 @@ namespace GlobalHook.Core.Windows.Mouse
             if (!CanBeInstalled)
                 ExceptionHelper.ThrowHookCantBeInstalled();
 
-            if (Installed)
+            if (IsInstalled)
                 ExceptionHelper.ThrowHookIsAlreadyInstalled();
 
             if (processId != 0)
@@ -67,7 +67,7 @@ namespace GlobalHook.Core.Windows.Mouse
 
         public void Uninstall()
         {
-            if (!Installed)
+            if (!IsInstalled)
                 return;
 
             User32.DestroyWindow(Window);

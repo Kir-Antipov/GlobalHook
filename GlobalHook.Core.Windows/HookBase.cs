@@ -14,7 +14,7 @@ namespace GlobalHook.Core.Windows
 
         public abstract bool CanBeInstalledIntoProcess { get; }
 
-        public bool Installed => Hook is { };
+        public bool IsInstalled => Hook is { };
 
         private readonly HookId HookId;
         private Hook? Hook = null;
@@ -32,7 +32,7 @@ namespace GlobalHook.Core.Windows
             if (!CanBeInstalled)
                 ExceptionHelper.ThrowHookCantBeInstalled();
 
-            if (Installed)
+            if (IsInstalled)
                 ExceptionHelper.ThrowHookIsAlreadyInstalled();
 
             if (processId != 0 && !CanBeInstalledIntoProcess)
@@ -68,7 +68,7 @@ namespace GlobalHook.Core.Windows
 
         public virtual void Uninstall()
         {
-            if (!Installed)
+            if (!IsInstalled)
                 return;
 
             User32.UnhookWindowsHookEx(HookHandle);

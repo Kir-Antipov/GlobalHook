@@ -12,7 +12,7 @@ namespace GlobalHook.Core
 
         public bool CanBeInstalledIntoProcess { get; }
 
-        public bool Installed => Array.TrueForAll(Hooks, x => x.Installed);
+        public bool IsInstalled => Array.TrueForAll(Hooks, x => x.IsInstalled);
 
         public event EventHandler<IHookEventArgs>? OnEvent;
 
@@ -36,26 +36,26 @@ namespace GlobalHook.Core
 
         public void Install(bool ignoreProcessHasNoWindow = false) => Array.ForEach(Hooks, hook => 
         { 
-            hook.OnEvent += Delegate;
             hook.Install(ignoreProcessHasNoWindow); 
+            hook.OnEvent += Delegate;
         });
 
         public void Install(long processId, bool ignoreProcessHasNoWindow = false) => Array.ForEach(Hooks, hook =>
         {
-            hook.OnEvent += Delegate;
             hook.Install(processId, ignoreProcessHasNoWindow);
+            hook.OnEvent += Delegate;
         });
 
         public void Uninstall() => Array.ForEach(Hooks, hook => 
         { 
-            hook.OnEvent -= Delegate;
             hook.Uninstall();
+            hook.OnEvent -= Delegate;
         });
 
         public void Dispose()
         {
-            Uninstall();
             GC.SuppressFinalize(this);
+            Uninstall();
         }
 
         ~CombinedHook() => Uninstall();
