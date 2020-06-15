@@ -36,15 +36,8 @@ namespace GlobalHook.Core.Windows.Mouse
             bool prevented = false;
 
             IPoint coords = new Point(data.Point.X, data.Point.Y);
-
-            // https://docs.microsoft.com/en-us/windows/win32/inputdev/wm-mousewheel
-            const int wheelDelta = 120;
-            Span<byte> deltaBytes = stackalloc byte[4];
-            deltaBytes[2] = (byte)((data.Data & 0x00FF0000) >> 16);
-            deltaBytes[3] = (byte)((data.Data & 0xFF000000) >> 24);
-            int delta = (BitConverter.ToInt32(deltaBytes) >> 16) / wheelDelta;
-
-            DateTime time = Kernel32.TicksToDateTime(data.Time);
+            int delta = data.WheelDelta;
+            DateTime time = data.DateTime;
 
             switch (state)
             {

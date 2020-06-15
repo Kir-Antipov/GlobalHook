@@ -14,6 +14,8 @@ namespace GlobalHook.Core.Windows.Interop.Libs
     {
         public const string LibraryName = "user32.dll";
 
+        public const int WheelDelta = 120;
+
         public static readonly IntPtr Handle;
 
         public static readonly int DoubleClickTime;

@@ -47,7 +47,7 @@ namespace GlobalHook.Core.Windows.Mouse
             string name = Guid.NewGuid().ToString();
             WindowClasses windowClass = new WindowClasses
             {
-                Hook = LowLevelHook,
+                Hook = RawHook,
                 Module = Kernel32.GetModuleHandle(null),
                 ClassName = $"{name} Class",
             };
@@ -77,7 +77,7 @@ namespace GlobalHook.Core.Windows.Mouse
             Hook = null;
         }
 
-        protected virtual IntPtr LowLevelHook(IntPtr hWnd, uint msg, IntPtr wParam, IntPtr lParam)
+        protected virtual IntPtr RawHook(IntPtr hWnd, uint msg, IntPtr wParam, IntPtr lParam)
         {
             DateTime time = DateTime.Now;
 
@@ -97,10 +97,7 @@ namespace GlobalHook.Core.Windows.Mouse
         private void Handle(DateTime time, RawMouseButtons state, InputMouse data)
         {
             IPoint coords = new Point(data.X, data.Y, !data.Flags.HasFlag(RawMouseFlags.MoveAbsolute));
-
-            // https://docs.microsoft.com/en-us/windows/win32/inputdev/wm-mousewheel
-            const int wheelDelta = 120;
-            int delta = data.Data.Delta / wheelDelta;
+            int delta = data.Data.WheelDelta;
 
             switch (state)
             {
@@ -185,8 +182,8 @@ namespace GlobalHook.Core.Windows.Mouse
 
         public void Dispose()
         {
-            Dispose(true);
             GC.SuppressFinalize(this);
+            Dispose(true);
         }
 
         protected virtual void Dispose(bool disposing) => Uninstall();

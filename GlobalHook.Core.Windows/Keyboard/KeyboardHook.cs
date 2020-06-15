@@ -47,7 +47,7 @@ namespace GlobalHook.Core.Windows.Keyboard
             if (User32.ToAscii(data.Key, data.ScanCode, keyboardState, chars, data.Flags) == 1)
                 keyChar = shift ^ capsLock ? char.ToUpper(chars[0]) : chars[0];
 
-            IKeyboardEventArgs e = new KeyboardEventArgs(key, state, keyChar, Kernel32.TicksToDateTime(data.Time));
+            IKeyboardEventArgs e = new KeyboardEventArgs(key, state, keyChar, data.DateTime);
             InvokeOnEvent(this, e);
 
             switch (state)
