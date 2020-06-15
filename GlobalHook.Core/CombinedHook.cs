@@ -6,7 +6,7 @@ namespace GlobalHook.Core
 {
     internal class CombinedHook : IHook
     {
-        HookType IHook.HookType => HookType.Undefined;
+        public HookType HookType { get; }
 
         public bool CanBeInstalled => true;
 
@@ -24,6 +24,14 @@ namespace GlobalHook.Core
             Delegate = (sender, args) => OnEvent?.Invoke(sender, args);
             Hooks = hooks.Where(x => x.CanBeInstalled).ToArray();
             CanBeInstalledDirectly = Array.TrueForAll(Hooks, x => x.CanBeInstalledDirectly);
+
+            HashSet<HookType> hookTypes = new HashSet<HookType>(Array.ConvertAll(Hooks, hook => hook.HookType));
+            HookType = hookTypes.Count switch
+            {
+                0 => HookType.Undefined,
+                1 => hookTypes.First(),
+                _ => HookType.Mixed
+            };
         }
 
         public void Install(bool ignoreProcessHasNoWindow = false) => Array.ForEach(Hooks, hook => 
