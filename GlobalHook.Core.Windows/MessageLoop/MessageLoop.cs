@@ -9,6 +9,8 @@ namespace GlobalHook.Core.Windows.MessageLoop
 {
     public class MessageLoop : IMessageLoop
     {
+        public bool CanBeRunned => Environment.OSVersion.Platform == PlatformID.Win32NT;
+
         public void Run(IEnumerable<IHook> hooks, Func<bool, bool> goOnPredicate) => Run(hooks, 0, goOnPredicate);
 
         public void Run(IEnumerable<IHook> hooks, long processId, Func<bool, bool> goOnPredicate)

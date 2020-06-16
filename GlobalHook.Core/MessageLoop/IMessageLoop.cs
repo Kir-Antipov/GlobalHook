@@ -11,6 +11,11 @@ namespace GlobalHook.Core.MessageLoop
     public interface IMessageLoop
     {
         /// <summary>
+        /// Indicates whether this message loop can be started in the current environment.
+        /// </summary>
+        bool CanBeRunned { get; }
+
+        /// <summary>
         /// The message loop must be started in the main thread.
         /// It locks the thread, automatically installs hooks (<see cref="IHook.Install"/>) at startup 
         /// and uninstalls them (<see cref="IHook.Uninstall"/>) after it's finished.
