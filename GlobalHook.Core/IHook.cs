@@ -1,8 +1,8 @@
-﻿using System;
+﻿using GlobalHook.Core.Helpers;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Reflection;
 
 namespace GlobalHook.Core
@@ -27,52 +27,21 @@ namespace GlobalHook.Core
 
         event EventHandler<IHookEventArgs>? OnEvent;
 
+
         public static IHook Combine(IEnumerable<IHook> hooks) => new CombinedHook(hooks);
 
         public static IHook Combine(params IHook[] hooks) => Combine((IEnumerable<IHook>)hooks);
 
-        public static IEnumerable<IHook> Load(Assembly assembly) => assembly
-            .ExportedTypes
-            .Where(typeof(IHook).IsAssignableFrom).Where(x => !x.IsInterface && !x.IsAbstract)
-            .Select(x => x.GetConstructor(Type.EmptyTypes) is { } constructor ? (IHook)constructor.Invoke(null) : null)
-            .Where(x => x is { })!;
 
-        public static IEnumerable<IHook> Load(string directory, string searchPattern, EnumerationOptions options)
-        {
-            if (Directory.Exists(directory))
-                return LoadFromDirectory(directory, searchPattern, options);
+        public static IEnumerable<IHook> Load(Assembly assembly) => Loader<IHook>.Load(assembly);
 
-            throw new DirectoryNotFoundException(directory);
-        }
+        public static IEnumerable<IHook> Load(string directory, string searchPattern, EnumerationOptions options) => Loader<IHook>.Load(directory, searchPattern, options);
 
-        public static IEnumerable<IHook> Load(string directory, string searchPattern, SearchOption options) => Load(directory, searchPattern, options == SearchOption.AllDirectories ? new EnumerationOptions { RecurseSubdirectories = true } : new EnumerationOptions());
+        public static IEnumerable<IHook> Load(string directory, string searchPattern, SearchOption options) => Loader<IHook>.Load(directory, searchPattern, options);
 
-        public static IEnumerable<IHook> Load(string directory, string searchPattern) => Load(directory, searchPattern, new EnumerationOptions());
-        
-        public static IEnumerable<IHook> Load(string path)
-        {
-            if (File.Exists(path))
-                return LoadFromFile(path);
+        public static IEnumerable<IHook> Load(string directory, string searchPattern) => Loader<IHook>.Load(directory, searchPattern);
 
-            if (Directory.Exists(path))
-                return LoadFromDirectory(path, "*.dll", new EnumerationOptions());
-
-            throw new FileNotFoundException(path);
-        }
-
-        private static IEnumerable<IHook> LoadFromFile(string path)
-        {
-            try
-            {
-                return Load(Assembly.Load(File.ReadAllBytes(path)));
-            }
-            catch
-            {
-                return Enumerable.Empty<IHook>();
-            }
-        }
-
-        private static IEnumerable<IHook> LoadFromDirectory(string path, string searchPattern, EnumerationOptions options) => Directory.EnumerateFiles(path, searchPattern, options).SelectMany(LoadFromFile);
+        public static IEnumerable<IHook> Load(string path) => Loader<IHook>.Load(path);
     }
 
     public static class HookExtensions

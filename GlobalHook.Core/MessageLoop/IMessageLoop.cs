@@ -1,6 +1,9 @@
-﻿using System;
+﻿using GlobalHook.Core.Helpers;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
+using System.Reflection;
 using System.Threading;
 
 namespace GlobalHook.Core.MessageLoop
@@ -28,6 +31,17 @@ namespace GlobalHook.Core.MessageLoop
         /// This is an aggregated event for all running hooks.
         /// </summary>
         event EventHandler<IHookEventArgs>? OnEvent;
+
+
+        public static IEnumerable<IMessageLoop> Load(Assembly assembly) => Loader<IMessageLoop>.Load(assembly);
+
+        public static IEnumerable<IMessageLoop> Load(string directory, string searchPattern, EnumerationOptions options) => Loader<IMessageLoop>.Load(directory, searchPattern, options);
+
+        public static IEnumerable<IMessageLoop> Load(string directory, string searchPattern, SearchOption options) => Loader<IMessageLoop>.Load(directory, searchPattern, options);
+
+        public static IEnumerable<IMessageLoop> Load(string directory, string searchPattern) => Loader<IMessageLoop>.Load(directory, searchPattern);
+
+        public static IEnumerable<IMessageLoop> Load(string path) => Loader<IMessageLoop>.Load(path);
     }
 
     public static class MessageLoopExtensions
