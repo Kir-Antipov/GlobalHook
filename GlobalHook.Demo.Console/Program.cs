@@ -2,9 +2,8 @@
 using GlobalHook.Core.Keyboard;
 using GlobalHook.Core.MessageLoop;
 using GlobalHook.Core.Mouse;
-using GlobalHook.Core.Windows.Keyboard;
-using GlobalHook.Core.Windows.MessageLoop;
-using GlobalHook.Core.Windows.Mouse;
+using System;
+using System.Linq;
 using System.Threading;
 
 namespace GlobalHook.Demo.Console
@@ -15,10 +14,23 @@ namespace GlobalHook.Demo.Console
     {
         public static void Main()
         {
-            IMouseHook mouseHook = new MouseHook();
-            // IMouseHook mouseHook = new RawMouseHook();
-            IKeyboardHook keyboardHook = new KeyboardHook();
-            IMessageLoop loop = new MessageLoop();
+            // Manual loading
+            /*IMouseHook mouseHook = new Core.Windows.Mouse.MouseHook();
+            // IMouseHook mouseHook = new Core.Windows.Mouse.RawMouseHook();
+            IKeyboardHook keyboardHook = new Core.Windows.Keyboard.KeyboardHook();
+            IMessageLoop loop = new Core.Windows.MessageLoop.MessageLoop();*/
+
+            // Dynamic loading
+            IHook[] hooks = IHook
+                .Load(Environment.CurrentDirectory)     // Load all hooks from current directory's DLLs
+                .Where(x => x.CanBeInstalled)           // Select only those hooks that are supported by the current OS 
+                .Where(x => x.CanPreventDefault)        // We're interested in hooks that can prevent default event actions
+                .ToArray();
+
+            IMouseHook mouseHook = hooks.OfType<IMouseHook>().First();
+            IKeyboardHook keyboardHook = hooks.OfType<IKeyboardHook>().First();
+            IMessageLoop loop = IMessageLoop.Load(Environment.CurrentDirectory).First(x => x.CanBeRunned);
+
             CancellationTokenSource source = new CancellationTokenSource();
 
             loop.OnEvent += Log;
@@ -36,6 +48,7 @@ namespace GlobalHook.Demo.Console
                 if (e.CanPreventDefault && e.Key.HasFlag(Keys.M))
                     e.PreventDefault();
             };
+
             // Disable middle mouse button
             mouseHook.OnEvent += (_, e) =>
             {
