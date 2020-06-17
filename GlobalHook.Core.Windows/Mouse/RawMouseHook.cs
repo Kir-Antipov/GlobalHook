@@ -11,6 +11,13 @@ using System.Threading;
 
 namespace GlobalHook.Core.Windows.Mouse
 {
+    /// <summary>
+    /// Windows mouse hook.
+    /// </summary>
+    /// <remarks>
+    /// This hook can only be applied globally.<para/>
+    /// Movements are recorded in relative values, preventing of default actions is not possible.
+    /// </remarks>
     public class RawMouseHook : IMouseHook
     {
         public HookType HookType => HookType.Mouse;

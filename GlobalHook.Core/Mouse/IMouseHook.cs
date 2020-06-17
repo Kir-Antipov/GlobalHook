@@ -3,10 +3,14 @@ using System;
 
 namespace GlobalHook.Core.Mouse
 {
+    /// <summary>
+    /// Represents the base interface for mouse hooks.
+    /// </summary>
     public interface IMouseHook : IHook
     {
         HookType IHook.HookType => HookType.Mouse;
 
+        /// <inheritdoc cref="IHook.OnEvent"/>
         new event EventHandler<IMouseEventArgs>? OnEvent
         {
             add => ((IHook)this).OnEvent += value.Cast<EventHandler<IHookEventArgs>>();
@@ -14,7 +18,7 @@ namespace GlobalHook.Core.Mouse
         }
 
         /// <summary>
-        /// Occurs when the mouse a mouse button is pressed. 
+        /// Occurs when a mouse button is pressed. 
         /// </summary>
         event EventHandler<IMouseEventArgs>? MouseDown;
 
@@ -51,17 +55,17 @@ namespace GlobalHook.Core.Mouse
         event EventHandler<IMouseEventArgs>? MouseDoubleClick;
 
         /// <summary>
-        /// Occurs when the mouse wheel moves. 
+        /// Occurs when a mouse wheel rotates. 
         /// </summary>
         event EventHandler<IMouseEventArgs>? MouseWheel;
 
         /// <summary>
-        /// Occurs when the mouse's horizontal scroll wheel is tilted or rotated
+        /// Occurs when a mouse horizontal scroll wheel is tilted or rotated.
         /// </summary>
         event EventHandler<IMouseEventArgs>? MouseHorizontalWheel;
 
         /// <summary>
-        /// Occurs when the mouse pointer is moved. 
+        /// Occurs when the mouse moves. 
         /// </summary>
         event EventHandler<IMouseEventArgs>? MouseMove;
     }

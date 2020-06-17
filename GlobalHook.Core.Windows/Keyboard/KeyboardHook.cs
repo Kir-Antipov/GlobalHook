@@ -8,6 +8,13 @@ using System.Text;
 
 namespace GlobalHook.Core.Windows.Keyboard
 {
+    /// <summary>
+    /// Windows keyboard hook.
+    /// </summary>
+    /// <remarks>
+    /// This hook can only be applied globally.<para/>
+    /// Preventing of default actions is possible.
+    /// </remarks>
     public class KeyboardHook : HookBase, IKeyboardHook
     {
         public override HookType HookType => HookType.Keyboard;

@@ -8,6 +8,9 @@ using System.Threading;
 
 namespace GlobalHook.Core.MessageLoop
 {
+    /// <summary>
+    /// Represents the system message processing loop required to receive messages from hooks.
+    /// </summary>
     public interface IMessageLoop
     {
         /// <summary>
@@ -38,17 +41,46 @@ namespace GlobalHook.Core.MessageLoop
         event EventHandler<IHookEventArgs>? OnEvent;
 
 
+        /// <summary>
+        /// Loads all message loops from the given <paramref name="assembly"/>.
+        /// </summary>
+        /// <param name="assembly">Assembly containing message loops.</param>
+        /// <returns>Loaded message loop instances.</returns>
         public static IEnumerable<IMessageLoop> Load(Assembly assembly) => Loader<IMessageLoop>.Load(assembly);
 
+        /// <summary>
+        /// Loads all message loops from DLLs in the given directory.
+        /// </summary>
+        /// <param name="directory">Directory containing DLLs.</param>
+        /// <param name="searchPattern">
+        /// The search string to match against the names of DLLs in path. This parameter
+        /// can contain a combination of valid literal path and wildcard (* and ?) characters,
+        /// but it doesn't support regular expressions.
+        /// </param>
+        /// <param name="options">File enumeration options.</param>
+        /// <returns>Loaded message loops instances.</returns>
         public static IEnumerable<IMessageLoop> Load(string directory, string searchPattern, EnumerationOptions options) => Loader<IMessageLoop>.Load(directory, searchPattern, options);
 
+        /// <inheritdoc cref="Load(string, string, EnumerationOptions)"/>
         public static IEnumerable<IMessageLoop> Load(string directory, string searchPattern, SearchOption options) => Loader<IMessageLoop>.Load(directory, searchPattern, options);
 
+        /// <inheritdoc cref="Load(string, string, EnumerationOptions)"/>
         public static IEnumerable<IMessageLoop> Load(string directory, string searchPattern) => Loader<IMessageLoop>.Load(directory, searchPattern);
 
+        /// <summary>
+        /// Loads all message loops from DLLs in the given directory.
+        /// <para/>
+        /// Loads all message loops from the given DLL filename.
+        /// </summary>
+        /// <param name="path">Directory containing DLLs or single DLL filename.</param>
+        /// <returns>Loaded message loops instances.</returns>
         public static IEnumerable<IMessageLoop> Load(string path) => Loader<IMessageLoop>.Load(path);
     }
 
+    /// <summary>
+    /// Provides a set of static (Shared in Visual Basic) methods for managing objects that
+    /// implement <see cref="IMessageLoop"/>.
+    /// </summary>
     public static class MessageLoopExtensions
     {
         /// <inheritdoc cref="IMessageLoop.Run(IEnumerable{IHook}, Func{bool, bool})"/>

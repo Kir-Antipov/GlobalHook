@@ -3,10 +3,14 @@ using System;
 
 namespace GlobalHook.Core.Keyboard
 {
+    /// <summary>
+    /// Represents the base interface for keyboard hooks.
+    /// </summary>
     public interface IKeyboardHook : IHook
     {
         HookType IHook.HookType => HookType.Keyboard;
 
+        /// <inheritdoc cref="IHook.OnEvent"/>
         new event EventHandler<IKeyboardEventArgs>? OnEvent
         {
             add => ((IHook)this).OnEvent += value.Cast<EventHandler<IHookEventArgs>>();

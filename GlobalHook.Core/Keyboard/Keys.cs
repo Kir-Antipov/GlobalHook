@@ -988,8 +988,20 @@ namespace GlobalHook.Core.Keyboard
         Alt = 262144
     }
 
+    /// <summary>
+    /// Provides a set of static (Shared in Visual Basic) methods for <see cref="Keys"/> values.
+    /// </summary>
     public static class KeysExtensions
     {
+        /// <summary>
+        /// Determines whether given bit fields are set in the given instance.
+        /// </summary>
+        /// <param name="key"><see cref="Keys"/> instance.</param>
+        /// <param name="keys">An enumeration values.</param>
+        /// <returns>
+        /// <see langword="true"/> if the <paramref name="keys"/> are set in the
+        /// given instance; otherwise, <see langword="false"/>.
+        /// </returns>
         public static bool HasFlags(this Keys key, params Keys[] keys) => Array.TrueForAll(keys, x => key.HasFlag(x));
     }
 }
