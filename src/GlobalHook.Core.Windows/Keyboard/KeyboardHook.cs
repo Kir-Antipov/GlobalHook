@@ -17,12 +17,18 @@ namespace GlobalHook.Core.Windows.Keyboard
     /// </remarks>
     public class KeyboardHook : HookBase, IKeyboardHook
     {
+        /// <inheritdoc cref="HookBase.HookType"/>
         public override HookType HookType => HookType.Keyboard;
 
+        /// <inheritdoc cref="HookBase.CanBeInstalledIntoProcess"/>
         public override bool CanBeInstalledIntoProcess => false;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="KeyboardHook"/> class.
+        /// </summary>
         public KeyboardHook() : base(HookId.Keyboard) { }
 
+        /// <inheritdoc cref="HookBase.LowLevelHook(int, IntPtr, IntPtr)"/>
         protected override IntPtr LowLevelHook(int nCode, IntPtr wParam, IntPtr lParam)
         {
             bool prevented = false;
@@ -75,8 +81,13 @@ namespace GlobalHook.Core.Windows.Keyboard
             return e.DefaultPrevented;
         }
 
+        /// <inheritdoc cref="IKeyboardHook.KeyDown"/>
         public event EventHandler<IKeyboardEventArgs>? KeyDown;
+
+        /// <inheritdoc cref="IKeyboardHook.KeyUp"/>
         public event EventHandler<IKeyboardEventArgs>? KeyUp;
+
+        /// <inheritdoc cref="IKeyboardHook.KeyPress"/>
         public event EventHandler<IKeyboardEventArgs>? KeyPress;
     }
 }

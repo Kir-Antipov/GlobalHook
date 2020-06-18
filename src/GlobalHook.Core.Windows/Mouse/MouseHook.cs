@@ -18,14 +18,20 @@ namespace GlobalHook.Core.Windows.Mouse
     /// </remarks>
     public class MouseHook : HookBase, IMouseHook
     {
+        /// <inheritdoc cref="HookBase.HookType"/>
         public override HookType HookType => HookType.Mouse;
 
+        /// <inheritdoc cref="HookBase.CanBeInstalledIntoProcess"/>
         public override bool CanBeInstalledIntoProcess => false;
 
         private int LastLeftClick = 0;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MouseHook"/> class.
+        /// </summary>
         public MouseHook() : base(HookId.Mouse) { }
 
+        /// <inheritdoc cref="HookBase.LowLevelHook"/>
         protected override IntPtr LowLevelHook(int nCode, IntPtr wParam, IntPtr lParam)
         {
             bool prevented = false;
@@ -115,12 +121,25 @@ namespace GlobalHook.Core.Windows.Mouse
             return prevented;
         }
 
+        /// <inheritdoc cref="IMouseHook.MouseDown"/>
         public event EventHandler<IMouseEventArgs>? MouseDown;
+
+        /// <inheritdoc cref="IMouseHook.MouseUp"/>
         public event EventHandler<IMouseEventArgs>? MouseUp;
+
+        /// <inheritdoc cref="IMouseHook.MouseClick"/>
         public event EventHandler<IMouseEventArgs>? MouseClick;
+
+        /// <inheritdoc cref="IMouseHook.MouseDoubleClick"/>
         public event EventHandler<IMouseEventArgs>? MouseDoubleClick;
+
+        /// <inheritdoc cref="IMouseHook.MouseWheel"/>
         public event EventHandler<IMouseEventArgs>? MouseWheel;
+
+        /// <inheritdoc cref="IMouseHook.MouseHorizontalWheel"/>
         public event EventHandler<IMouseEventArgs>? MouseHorizontalWheel;
+
+        /// <inheritdoc cref="IMouseHook.MouseMove"/>
         public event EventHandler<IMouseEventArgs>? MouseMove;
     }
 }

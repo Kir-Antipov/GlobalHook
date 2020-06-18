@@ -20,14 +20,19 @@ namespace GlobalHook.Core.Windows.Mouse
     /// </remarks>
     public class RawMouseHook : IMouseHook
     {
+        /// <inheritdoc cref="IHook.HookType"/>
         public HookType HookType => HookType.Mouse;
 
+        /// <inheritdoc cref="IHook.CanBeInstalled"/>
         public bool CanBeInstalled => Environment.OSVersion.Platform == PlatformID.Win32NT;
 
+        /// <inheritdoc cref="IHook.CanBeInstalledIntoProcess"/>
         public bool CanBeInstalledIntoProcess => false;
 
+        /// <inheritdoc cref="IHook.CanPreventDefault"/>
         public bool CanPreventDefault => false;
 
+        /// <inheritdoc cref="IHook.IsInstalled"/>
         public bool IsInstalled => Hook is { };
 
         private int LastLeftClick = 0;
@@ -35,8 +40,10 @@ namespace GlobalHook.Core.Windows.Mouse
         private RawHook? Hook = null;
         private IntPtr Window = IntPtr.Zero;
 
+        /// <inheritdoc cref="IHook.Install(bool)"/>
         public virtual void Install(bool ignoreProcessHasNoWindow = false) => Install(0);
 
+        /// <inheritdoc cref="IHook.Install(long, bool)"/>
         public virtual void Install(long processId, bool ignoreProcessHasNoWindow = false)
         {
             if (!CanBeInstalled)
@@ -74,6 +81,7 @@ namespace GlobalHook.Core.Windows.Mouse
             Hook = windowClass.Hook;
         }
 
+        /// <inheritdoc cref="IHook.Uninstall"/>
         public void Uninstall()
         {
             if (!IsInstalled)
@@ -84,6 +92,14 @@ namespace GlobalHook.Core.Windows.Mouse
             Hook = null;
         }
 
+        /// <summary>
+        /// Hook handler.
+        /// </summary>
+        /// <param name="hWnd">RawHookProc hWnd.</param>
+        /// <param name="msg">RawHookProc msg.</param>
+        /// <param name="wParam">RawHookProc wParam.</param>
+        /// <param name="lParam">RawHookProc lParam.</param>
+        /// <returns>RawHookProc lResult.</returns>
         protected virtual IntPtr RawHook(IntPtr hWnd, uint msg, IntPtr wParam, IntPtr lParam)
         {
             DateTime time = DateTime.Now;
@@ -187,23 +203,41 @@ namespace GlobalHook.Core.Windows.Mouse
             }
         }
 
+        /// <inheritdoc cref="IDisposable.Dispose"/>
         public void Dispose()
         {
             GC.SuppressFinalize(this);
             Dispose(true);
         }
 
+        /// <inheritdoc cref="Dispose()"/>
+        /// <param name="disposing">Indicates whether this method is called from managed code (<see langword="true"/>).</param>
         protected virtual void Dispose(bool disposing) => Uninstall();
 
         ~RawMouseHook() => Dispose(false);
 
+        /// <inheritdoc cref="IHook.OnEvent"/>
         public event EventHandler<IHookEventArgs>? OnEvent;
+
+        /// <inheritdoc cref="IMouseHook.MouseDown"/>
         public event EventHandler<IMouseEventArgs>? MouseDown;
+
+        /// <inheritdoc cref="IMouseHook.MouseUp"/>
         public event EventHandler<IMouseEventArgs>? MouseUp;
+
+        /// <inheritdoc cref="IMouseHook.MouseClick"/>
         public event EventHandler<IMouseEventArgs>? MouseClick;
+
+        /// <inheritdoc cref="IMouseHook.MouseDoubleClick"/>
         public event EventHandler<IMouseEventArgs>? MouseDoubleClick;
+
+        /// <inheritdoc cref="IMouseHook.MouseWheel"/>
         public event EventHandler<IMouseEventArgs>? MouseWheel;
+
+        /// <inheritdoc cref="IMouseHook.MouseHorizontalWheel"/>
         public event EventHandler<IMouseEventArgs>? MouseHorizontalWheel;
+
+        /// <inheritdoc cref="IMouseHook.MouseMove"/>
         public event EventHandler<IMouseEventArgs>? MouseMove;
     }
 }
