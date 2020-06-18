@@ -5,6 +5,7 @@
     <Nullable>enable</Nullable>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <Authors>Kir_Antipov</Authors>
     <Company>Kir_Antipov</Company>
     <PackageId>GlobalHook</PackageId>
@@ -14,9 +15,10 @@
     <RepositoryUrl>https://github.com/Kir-Antipov/GlobalHook</RepositoryUrl>
     <PackageProjectUrl>https://github.com/Kir-Antipov/GlobalHook</PackageProjectUrl>
     <RepositoryType>git</RepositoryType>
-    <PackageTags>hook hooks keyboard mouse</PackageTags>
+    <PackageTags>hook hooks globalhook hook-framework cross-platform</PackageTags>
     <Description>Library that describes primitives for creating hooks (e.g., keyboard hook, mouse hook).</Description>
     <PackageIcon>icon.png</PackageIcon>
+    <Version>2.0.0</Version>
   </PropertyGroup>
 
   <ItemGroup>
